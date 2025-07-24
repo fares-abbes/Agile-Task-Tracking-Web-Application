@@ -22,11 +22,11 @@ private  final PasswordEncoder passwordEncoder;
         return userRepo.findAll();
     }
 
-    public Optional<Users> getUserById(Long id) {
+    public Optional<Users> getUserById(int id) {
         return userRepo.findById(id);
     }
 
-    public Users updateUser(Long id, Users userDetails) {
+    public Users updateUser(int id, Users userDetails) {
         return userRepo.findById(id).map(user -> {
             user.setUsername(userDetails.getUsername());
             user.setRole(userDetails.getRole());
@@ -37,7 +37,7 @@ private  final PasswordEncoder passwordEncoder;
         }).orElse(null);
     }
 
-    public boolean deleteUser(Long id) {
+    public boolean deleteUser(int id) {
         if (userRepo.existsById(id)) {
             userRepo.deleteById(id);
             return true;

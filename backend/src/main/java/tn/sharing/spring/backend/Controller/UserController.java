@@ -11,36 +11,38 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "*")
+
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @PostMapping
+    @PostMapping("createuser")
     public ResponseEntity<Users> createUser(@RequestBody Users user) {
         return ResponseEntity.ok(userService.createUser(user));
     }
 
-    @GetMapping
+    @GetMapping("/getusersList")
     public ResponseEntity<List<Users>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Users> getUserById(@PathVariable Long id) {
+    @GetMapping("/getuser/{id}")
+    public ResponseEntity<Users> getUserById(@PathVariable int id) {
         Optional<Users> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Users> updateUser(@PathVariable Long id, @RequestBody Users user) {
+    @PutMapping("/updateuser/{id}")
+    public ResponseEntity<Users> updateUser(@PathVariable int id, @RequestBody Users user) {
         Users updated = userService.updateUser(id, user);
         if (updated == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    @DeleteMapping("/deleteuser/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         if (userService.deleteUser(id))
             return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();

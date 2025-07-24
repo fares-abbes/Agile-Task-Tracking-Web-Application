@@ -7,7 +7,7 @@ import tn.sharing.spring.backend.Entity.Users;
 import java.util.Optional;
 
 @Repository
-public interface UserRepo  extends JpaRepository<Users,Long> {
+public interface UserRepo  extends JpaRepository<Users,Integer> {
 
         Optional<Users> findByUsername(String username);
 

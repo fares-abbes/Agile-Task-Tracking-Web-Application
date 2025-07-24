@@ -2,8 +2,8 @@ package tn.sharing.spring.backend.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import tn.sharing.spring.backend.Entity.Product;
+import tn.sharing.spring.backend.Entity.Project;
 
 @Repository
-public interface ProductRepo extends JpaRepository<Product, Long> {
+public interface ProjectRepo extends JpaRepository<Project, Integer> {
 }

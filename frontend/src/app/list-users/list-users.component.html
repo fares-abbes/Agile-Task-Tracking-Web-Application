@@ -1,0 +1,49 @@
+<app-navbar></app-navbar>
+
+<div class="users-container">
+  <h2 class="users-title">User Management</h2>
+  <div *ngIf="loading" class="users-loading">Loading users...</div>
+  <div *ngIf="errorMessage" class="users-error">{{ errorMessage }}</div>
+  <table class="users-table" *ngIf="!loading && users.length">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Created At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td *ngIf="editUserId !== user.id">{{ user.username }}</td>
+        <td *ngIf="editUserId === user.id"><input [(ngModel)]="editUsername" class="edit-input" /></td>
+        <td *ngIf="editUserId !== user.id">{{ user.email }}</td>
+        <td *ngIf="editUserId === user.id"><input [(ngModel)]="editEmail" class="edit-input" /></td>
+        <td *ngIf="editUserId !== user.id">{{ user.role }}</td>
+        <td *ngIf="editUserId === user.id">
+          <select [(ngModel)]="editRole" class="edit-input">
+            <option value="ADMIN">ADMIN</option>
+            <option value="QUALITY">QUALITY</option>
+            <option value="TESTER">TESTER</option>
+            <option value="USER">USER</option>
+          </select>
+        </td>
+        <td>{{ user.createdAt | date:'mediumDate' }}</td>
+        <td>
+          <ng-container *ngIf="editUserId !== user.id">
+            <button class="action-btn edit-btn" (click)="startEdit(user)">Edit</button>
+            <button class="action-btn delete-btn" (click)="deleteUser(user.id)">Delete</button>
+          </ng-container>
+          <ng-container *ngIf="editUserId === user.id">
+            <button class="action-btn save-btn" (click)="updateUser()">Save</button>
+            <button class="action-btn cancel-btn" (click)="cancelEdit()">Cancel</button>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="!loading && !users.length" class="users-empty">No users found.</div>
+</div>

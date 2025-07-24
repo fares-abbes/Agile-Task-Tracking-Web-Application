@@ -1,30 +1,21 @@
 package tn.sharing.spring.backend.Entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-
+import java.util.List;
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
-public class TestReport {
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int reportId;
-
-    @ManyToOne
-    private Project product;
-
-    @ManyToOne
-    private Users tester;
-
-    private LocalDate date;
-    private String result;
-    private String overallRemarks;
-
+    private int ClientId;
+    private String clientName;
+    @OneToMany(mappedBy = "client")
+    List<Project> products;
 }

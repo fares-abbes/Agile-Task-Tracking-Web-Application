@@ -1,5 +1,6 @@
 package tn.sharing.spring.backend.Controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -7,10 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tn.sharing.spring.backend.DTOs.LoginRequest;
 import tn.sharing.spring.backend.Entity.RefreshToken;
 import tn.sharing.spring.backend.Entity.Users;
@@ -19,8 +17,12 @@ import tn.sharing.spring.backend.Service.RefreshTokenService;
 import tn.sharing.spring.backend.Repository.UserRepo;
 
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+
 
 @RestController
+@CrossOrigin(origins = "*")
+
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -53,7 +55,7 @@ public class AuthController {
         // Find the user entity
         Users user = userRepository.findByUsername(request.getUsername()).orElseThrow();
         // Create a refresh token
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken((long) user.getId());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken((int) user.getId());
 
         return ResponseEntity.ok(Map.of(
                 "accessToken", token,

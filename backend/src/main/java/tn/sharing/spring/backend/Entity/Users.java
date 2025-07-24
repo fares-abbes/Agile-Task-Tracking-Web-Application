@@ -25,6 +25,7 @@ public class Users {
     private String username;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     private String email;
@@ -34,6 +35,9 @@ public class Users {
 
     @OneToMany(mappedBy="user")
     @JsonIgnore
-    private List<Product> products;
+    private List<Project> projects;
+    @ManyToMany
+    @JsonIgnore
+    private List<Tasks> tasks;
 
 }

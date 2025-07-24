@@ -3,61 +3,52 @@ package tn.sharing.spring.backend.Service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.sharing.spring.backend.Repository.TestReportRepo;
-import tn.sharing.spring.backend.Repository.ProductRepo;
+import tn.sharing.spring.backend.Repository.ProjectRepo;
 import tn.sharing.spring.backend.Repository.UserRepo;
-import tn.sharing.spring.backend.Repository.ProductTestAttributeRepo;
 import tn.sharing.spring.backend.Entity.TestReport;
-import tn.sharing.spring.backend.Entity.Product;
+import tn.sharing.spring.backend.Entity.Project;
 import tn.sharing.spring.backend.Entity.Users;
 import tn.sharing.spring.backend.Entity.Role;
-import tn.sharing.spring.backend.Entity.ProductTestAttribute;
-
-import java.util.List;
-import java.util.Map;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @AllArgsConstructor
 @Service
 public class TestReportService {
     private final TestReportRepo testReportRepo;
-    private final ProductRepo productRepo;
+    private final ProjectRepo productRepo;
     private final UserRepo userRepo;
-    private final ProductTestAttributeRepo productTestAttributeRepo;
 
-    private boolean isQualityUser(Long userId) {
+    private boolean isTester(int userId) {
         Optional<Users> userOpt = userRepo.findById(userId);
-        return userOpt.isPresent() && userOpt.get().getRole() == Role.QUALITY;
+        return userOpt.isPresent() && userOpt.get().getRole() == Role.TESTER;
     }
-
-    public TestReport createTestReport(Long productId, Long userId, TestReport report) {
-        if (!isQualityUser(userId))
+    public TestReport assignTestReportToTester(int reportId, int qualityUserId, int testerId) {
+        if (!isTester(qualityUserId))
             return null;
-        Optional<Product> productOpt = productRepo.findById(productId);
+        Optional<TestReport> reportOpt = testReportRepo.findById(reportId);
+        Optional<Users> testerOpt = userRepo.findById(testerId);
+        if (reportOpt.isPresent() && testerOpt.isPresent()) {
+            TestReport report = reportOpt.get();
+            report.setTester(testerOpt.get());
+            report.setDate(LocalDate.now());
+            return testReportRepo.save(report);
+        }
+        return null;
+    }
+    public TestReport createTestReport(int productId, int userId, TestReport report) {
+        if (!isTester(userId))
+            return null;
+        Optional<Project> productOpt = productRepo.findById(productId);
         Optional<Users> userOpt = userRepo.findById(userId);
         if (productOpt.isPresent() && userOpt.isPresent()) {
             report.setProduct(productOpt.get());
-            report.setTester(userOpt.get());
             return testReportRepo.save(report);
         }
         return null;
     }
 
-    public List<ProductTestAttribute> getProductTestAttributes(Long productId, Long userId) {
-        if (!isQualityUser(userId))
-            return null;
-        return productTestAttributeRepo.findByProduct_ProductId(productId);
-    }
 
-    public ProductTestAttribute setProductTestAttributes(Long productId, Long userId, Map<String, String> attributes) {
-        if (!isQualityUser(userId))
-            return null;
-        Optional<Product> productOpt = productRepo.findById(productId);
-        if (productOpt.isPresent()) {
-            ProductTestAttribute attr = new ProductTestAttribute();
-            attr.setProduct(productOpt.get());
-            attr.setAttributes(attributes);
-            return productTestAttributeRepo.save(attr);
-        }
-        return null;
-    }
+
+
 }

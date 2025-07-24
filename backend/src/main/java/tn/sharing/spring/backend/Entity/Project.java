@@ -14,21 +14,18 @@ import java.util.List;
 @NoArgsConstructor
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
-public class Product {
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productId;
-    private String serialNumber;
-    private String location;
-    private LocalDate installationDate;
-
-    @ElementCollection
-    private List<String> models;
-
+    private int projectId;
     private String status;
     private LocalDate lastModified;
     @ManyToOne
     @JsonIgnore
-    
     private Users user;
+    @ManyToOne
+    @JsonIgnore
+    private Client client;
+    @OneToMany(mappedBy = "project")
+    List<Tasks> tasks;
 }

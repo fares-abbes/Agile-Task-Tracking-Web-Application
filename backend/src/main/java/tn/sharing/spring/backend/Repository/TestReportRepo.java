@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import tn.sharing.spring.backend.Entity.TestReport;
 
 @Repository
-public interface TestReportRepo extends JpaRepository<TestReport, Long> {
+public interface TestReportRepo extends JpaRepository<TestReport, Integer> {
 }

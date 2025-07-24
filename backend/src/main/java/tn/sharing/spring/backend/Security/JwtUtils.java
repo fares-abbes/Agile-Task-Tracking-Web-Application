@@ -13,9 +13,8 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    // Use a secure key for HS512 (at least 512 bits)
-    private final SecretKey jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS512);
-    private final int jwtExpirationMs = 86400000;
+     private final SecretKey jwtSecret = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+      private final int jwtExpirationMs = 86400000;
 
     public String generateJwtToken(UserDetails userDetails) {
         return Jwts.builder()

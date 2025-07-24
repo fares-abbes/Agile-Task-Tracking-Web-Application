@@ -10,33 +10,18 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/test-reports")
+@CrossOrigin(origins = "*")
+
 @RequiredArgsConstructor
 public class TestReportController {
     private final TestReportService testReportService;
 
     @PostMapping("/create/{productId}/{userId}")
-    public ResponseEntity<TestReport> createTestReport(@PathVariable Long productId, @PathVariable Long userId,
+    public ResponseEntity<TestReport> createTestReport(@PathVariable int productId, @PathVariable int userId,
                                                        @RequestBody TestReport report) {
         TestReport created = testReportService.createTestReport(productId, userId, report);
         if (created == null)
             return ResponseEntity.status(403).build();
         return ResponseEntity.ok(created);
-    }
-
-    @PostMapping("/attributes/{productId}/{userId}")
-    public ResponseEntity<?> setProductTestAttributes(@PathVariable Long productId, @PathVariable Long userId,
-            @RequestBody Map<String, String> attributes) {
-        var attr = testReportService.setProductTestAttributes(productId, userId, attributes);
-        if (attr == null)
-            return ResponseEntity.status(403).build();
-        return ResponseEntity.ok(attr);
-    }
-
-    @GetMapping("/attributes/{productId}/{userId}")
-    public ResponseEntity<?> getProductTestAttributes(@PathVariable Long productId, @PathVariable Long userId) {
-        var attrs = testReportService.getProductTestAttributes(productId, userId);
-        if (attrs == null)
-            return ResponseEntity.status(403).build();
-        return ResponseEntity.ok(attrs);
     }
 }

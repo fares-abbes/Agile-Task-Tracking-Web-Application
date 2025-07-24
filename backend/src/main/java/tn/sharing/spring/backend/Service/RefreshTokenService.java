@@ -18,7 +18,7 @@ public class RefreshTokenService {
     private final UserRepo userRepo;
     private final long refreshTokenDurationMs = 7 * 24 * 60 * 60 * 1000; // 7 days
 
-    public RefreshToken createRefreshToken(Long userId) {
+    public RefreshToken createRefreshToken(int userId) {
         Users user = userRepo.findById(userId).orElseThrow();
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUser(user);
@@ -35,7 +35,7 @@ public class RefreshTokenService {
         return token.getExpiryDate().isBefore(Instant.now());
     }
 
-    public void deleteByUserId(Long userId) {
+    public void deleteByUserId(int userId) {
         Users user = userRepo.findById(userId).orElseThrow();
         refreshTokenRepo.deleteByUser(user);
     }

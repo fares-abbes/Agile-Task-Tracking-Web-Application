@@ -8,7 +8,7 @@ import tn.sharing.spring.backend.Entity.Users;
 import java.util.Optional;
 
 @Repository
-public interface RefreshTokenRepo extends JpaRepository<RefreshToken, Long> {
+public interface RefreshTokenRepo extends JpaRepository<RefreshToken, Integer> {
     Optional<RefreshToken> findByToken(String token);
 
     void deleteByUser(Users user);

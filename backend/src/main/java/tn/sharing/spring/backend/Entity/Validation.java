@@ -17,12 +17,11 @@ public class Validation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int validationId;
 
-    private String status;
     private String reason;
     private LocalDate date;
+@ManyToOne
+private Tasks task;
 
-    @ManyToOne
-    private Product product;
 
     @ManyToOne
     private Users validator;
