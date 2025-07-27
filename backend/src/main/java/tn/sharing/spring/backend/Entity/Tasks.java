@@ -25,12 +25,10 @@ public class Tasks {
     private String description;
     private Importance importance;
     private Status status;
-    @ManyToMany(mappedBy = "tasks",cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
-            fetch=FetchType.EAGER)
+    @ManyToMany(mappedBy = "tasks", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JsonIgnore
     private List<Users> users;
+
     @ManyToOne
-    private  Project project;
-    @OneToMany
-    private List<Validation>validations;
+    private Project project;
 }

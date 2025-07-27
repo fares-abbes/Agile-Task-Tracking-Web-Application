@@ -10,45 +10,45 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/products")
+@RequestMapping("/api/projects")
 @CrossOrigin(origins = "*")
 
 @RequiredArgsConstructor
 public class ProjectController {
-    private final ProjectService productService;
+    private final ProjectService projectService;
 
-    @PostMapping("/{userId}")
-    public ResponseEntity<Project> addProduct(@RequestBody Project product, @PathVariable int userId) {
-        Project created = productService.addProduct(product, userId);
+    @PostMapping("/add/{userId}/{clientId}")
+    public ResponseEntity<Project> addProject(@RequestBody Project project, @PathVariable int userId, @PathVariable int clientId) {
+        Project created = projectService.addProject(project, userId, clientId);
         if (created == null)
             return ResponseEntity.status(403).build();
         return ResponseEntity.ok(created);
     }
 
-    @PutMapping("/{productId}")
-    public ResponseEntity<Project> updateProduct(@PathVariable int productId, @RequestBody Project product) {
-        Project updated = productService.updateProduct(productId, product);
+    @PutMapping("/{projectId}")
+    public ResponseEntity<Project> updateProject(@PathVariable int projectId, @RequestBody Project project) {
+        Project updated = projectService.updateProject(projectId, project);
         if (updated == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/{productId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable int productId) {
-        if (productService.deleteProduct(productId))
+    @DeleteMapping("/{projectId}")
+    public ResponseEntity<Void> deleteProject(@PathVariable int projectId) {
+        if (projectService.deleteProject(projectId))
             return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<List<Project>> getAllProjects() {
+        return ResponseEntity.ok(projectService.getAllProjects());
     }
 
-    @GetMapping("/{productId}")
-    public ResponseEntity<Project> getProductById(@PathVariable int productId) {
-        Optional<Project> product = productService.getProductById(productId);
-        return product.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{projectId}")
+    public ResponseEntity<Project> getProjectById(@PathVariable int projectId) {
+        Optional<Project> project = projectService.getProjectById(projectId);
+        return project.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
 

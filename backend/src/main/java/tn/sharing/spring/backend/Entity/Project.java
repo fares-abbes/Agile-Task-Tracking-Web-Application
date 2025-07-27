@@ -26,6 +26,9 @@ public class Project {
     @ManyToOne
     @JsonIgnore
     private Client client;
+    @JsonIgnore
     @OneToMany(mappedBy = "project")
     List<Tasks> tasks;
+    @OneToOne
+    private TestReport testReport;
 }

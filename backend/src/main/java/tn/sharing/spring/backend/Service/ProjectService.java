@@ -4,6 +4,7 @@ package tn.sharing.spring.backend.Service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.sharing.spring.backend.Entity.*;
+import tn.sharing.spring.backend.Repository.ClientRepo;
 import tn.sharing.spring.backend.Repository.ProjectRepo;
 import tn.sharing.spring.backend.Repository.TestReportRepo;
 import tn.sharing.spring.backend.Repository.UserRepo;
@@ -17,46 +18,53 @@ public class ProjectService {
     private final ProjectRepo projectRepo;
     private final UserRepo userRepo;
     private final TestReportRepo testReportRepo;
+    private final ClientRepo clientRepo;
 
-
-   
-
-
-    private boolean isQualityUser(int userId) {
-        Optional<Users> userOpt = userRepo.findById(userId);
-        return userOpt.isPresent() && userOpt.get().getRole() == Role.TESTER;
-    }
-
-    public Project addProduct(Project product, int userId) {
-        if (!isQualityUser(userId))
+    
+    public Project addProject(Project project, int userId, int clientId) {
+        
+            
+        // Find and set the client by ID
+        Optional<Client> clientOpt = clientRepo.findById(clientId);
+        if (clientOpt.isEmpty()) {
             return null;
-        return projectRepo.save(product);
+        }
+        
+        // Set the user (quality user who created the project)
+        Optional<Users> userOpt = userRepo.findById(userId);
+        if (userOpt.isPresent()) {
+            project.setUser(userOpt.get());
+        }
+        
+        // Set the client
+        project.setClient(clientOpt.get());
+        
+        return projectRepo.save(project);
     }
 
-    public boolean deleteProduct(int productId) {
-        if (projectRepo.existsById(productId)) {
-            projectRepo.deleteById(productId);
+    public boolean deleteProject(int projectId) {
+        if (projectRepo.existsById(projectId)) {
+            projectRepo.deleteById(projectId);
             return true;
         }
         return false;
     }
 
-    public Project updateProduct(int productId, Project productDetails) {
-        return projectRepo.findById(productId).map(product -> {
-
-            product.setTasks(productDetails.getTasks());
-            product.setStatus(productDetails.getStatus());
-            product.setLastModified(productDetails.getLastModified());
-            product.setUser(productDetails.getUser());
-            return projectRepo.save(product);
+    public Project updateProject(int projectId, Project projectDetails) {
+        return projectRepo.findById(projectId).map(project -> {
+            project.setTasks(projectDetails.getTasks());
+            project.setStatus(projectDetails.getStatus());
+            project.setLastModified(projectDetails.getLastModified());
+            project.setUser(projectDetails.getUser());
+            return projectRepo.save(project);
         }).orElse(null);
     }
 
-    public List<Project> getAllProducts() {
+    public List<Project> getAllProjects() {
         return projectRepo.findAll();
     }
 
-    public Optional<Project> getProductById(int productId) {
-        return projectRepo.findById(productId);
+    public Optional<Project> getProjectById(int projectId) {
+        return projectRepo.findById(projectId);
     }
 }
