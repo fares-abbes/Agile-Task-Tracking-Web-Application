@@ -1,0 +1,24 @@
+<div class="form-container">
+  <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+    <label for="username">Username</label>
+    <input id="username" formControlName="username" required />
+
+    <label for="email">Email</label>
+    <input id="email" formControlName="email" type="email" required />
+
+    <label for="password">Password</label>
+    <input id="password" formControlName="password" type="password" required />
+
+    <label for="role">Role</label>
+    <select id="role" formControlName="role">
+      <option value="DEVELOPPER">DEVELOPPER</option>
+      <option value="TEAMLEAD">TEAMLEAD</option>
+      <option value="ADMIN">Admin</option>
+      <option value="TESTER">TESTER</option>
+
+    </select>
+
+    <button type="submit" [disabled]="loading || createUserForm.invalid">Create User</button>
+    <div *ngIf="errorMessage" style="color: #f87171; margin-top: 1rem;">{{ errorMessage }}</div>
+  </form>
+</div>

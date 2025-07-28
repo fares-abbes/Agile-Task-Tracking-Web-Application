@@ -118,4 +118,15 @@ public class TaskService {
     public List<Tasks> getAllTasks() {
         return tasksRepo.findAll();
     }
+
+    /**
+     * Get tasks for a developer filtered by importance
+     * 
+     * @param developerId ID of the developer
+     * @param importance Importance level to filter by
+     * @return List of tasks matching the criteria
+     */
+    public List<Tasks> getTasksByDeveloperAndImportance(int developerId, Importance importance) {
+        return tasksRepo.findByUsers_IdAndImportance(developerId, importance);
+    }
 }

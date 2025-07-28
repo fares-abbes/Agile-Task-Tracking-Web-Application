@@ -51,5 +51,9 @@ public class ProjectController {
         return project.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-
+    @GetMapping("/teamlead/{teamLeadId}")
+    public ResponseEntity<List<Project>> getProjectsByTeamLead(@PathVariable int teamLeadId) {
+        List<Project> projects = projectService.getProjectsByTeamLead(teamLeadId);
+        return ResponseEntity.ok(projects);
+    }
 }

@@ -1,4 +1,3 @@
-
 package tn.sharing.spring.backend.Service;
 
 import lombok.AllArgsConstructor;
@@ -33,7 +32,7 @@ public class ProjectService {
         // Set the user (quality user who created the project)
         Optional<Users> userOpt = userRepo.findById(userId);
         if (userOpt.isPresent()) {
-            project.setUser(userOpt.get());
+            project.setTeamLead(userOpt.get());
         }
         
         // Set the client
@@ -55,7 +54,7 @@ public class ProjectService {
             project.setTasks(projectDetails.getTasks());
             project.setStatus(projectDetails.getStatus());
             project.setLastModified(projectDetails.getLastModified());
-            project.setUser(projectDetails.getUser());
+            project.setTeamLead(projectDetails.getTeamLead());
             return projectRepo.save(project);
         }).orElse(null);
     }
@@ -66,5 +65,9 @@ public class ProjectService {
 
     public Optional<Project> getProjectById(int projectId) {
         return projectRepo.findById(projectId);
+    }
+
+    public List<Project> getProjectsByTeamLead(int teamLeadId) {
+        return projectRepo.findByTeamLead_Id(teamLeadId);
     }
 }

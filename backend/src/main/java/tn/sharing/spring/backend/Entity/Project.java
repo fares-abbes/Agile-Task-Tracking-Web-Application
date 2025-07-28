@@ -22,7 +22,7 @@ public class Project {
     private LocalDate lastModified;
     @ManyToOne
     @JsonIgnore
-    private Users user;
+    private Users teamLead;
     @ManyToOne
     @JsonIgnore
     private Client client;

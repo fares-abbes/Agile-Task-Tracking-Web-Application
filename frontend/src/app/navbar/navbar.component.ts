@@ -7,11 +7,67 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  isMobileMenuOpen = false;
+
   constructor(private router: Router) {}
 
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  getUserInitials(): string {
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (!currentUserStr) return '?';
+
+    try {
+      const currentUser = JSON.parse(currentUserStr);
+      const username = currentUser.username || '';
+
+      if (!username) return '?';
+      return username.charAt(0).toUpperCase();
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      return '?';
+    }
+  }
+
+  isDeveloper(): boolean {
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (!currentUserStr) return false;
+
+    try {
+      const currentUser = JSON.parse(currentUserStr);
+      // Check if role is DEVELOPER (adjust the exact role name as needed)
+      return currentUser.role === 'DEVELOPPER';
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      return false;
+    }
+  }
+
   logout() {
+    // Clear local storage
+    localStorage.removeItem('currentUser');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+
+    // Navigate to login page
     this.router.navigate(['/auth']);
+  }
+
+  goToProjects() {
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (!currentUserStr) {
+      this.router.navigate(['/auth']);
+      return;
+    }
+    const currentUser = JSON.parse(currentUserStr);
+    if (currentUser.role === 'ADMIN') {
+      this.router.navigate(['/projects'], { queryParams: { type: 'all' } });
+    } else if (currentUser.role === 'TEAMLEAD') {
+      this.router.navigate(['/projects'], { queryParams: { teamLeadId: currentUser.id } });
+    } else {
+      this.router.navigate(['/projects']);
+    }
   }
 }

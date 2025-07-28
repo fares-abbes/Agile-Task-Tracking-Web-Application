@@ -33,7 +33,7 @@ public class Users {
 
     private LocalDate createdAt;
 
-    @OneToMany(mappedBy="user")
+    @OneToMany(mappedBy="teamLead")
     @JsonIgnore
     private List<Project> projects;
     @ManyToMany

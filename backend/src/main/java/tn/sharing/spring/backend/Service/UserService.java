@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import tn.sharing.spring.backend.Entity.Users;
 import tn.sharing.spring.backend.Repository.UserRepo;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ private  final UserRepo userRepo;
 private  final PasswordEncoder passwordEncoder;
     public Users createUser(Users user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setCreatedAt(LocalDate.now());
         return userRepo.save(user);
     }
     public List<Users> getAllUsers() {

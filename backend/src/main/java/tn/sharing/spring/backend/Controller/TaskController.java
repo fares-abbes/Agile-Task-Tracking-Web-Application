@@ -7,6 +7,7 @@ import tn.sharing.spring.backend.DTOs.TaskAssignmentRequest;
 import tn.sharing.spring.backend.DTOs.TaskCreationRequest;
 import tn.sharing.spring.backend.Entity.Tasks;
 import tn.sharing.spring.backend.Entity.Status;
+import tn.sharing.spring.backend.Entity.Importance;
 
 import tn.sharing.spring.backend.Service.TaskService;
 
@@ -14,6 +15,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/tasks")
+@CrossOrigin(origins = "*")
+
 @AllArgsConstructor
 public class TaskController {
 
@@ -70,5 +73,12 @@ public class TaskController {
             @PathVariable int developerId,
             @PathVariable Status status) {
         return ResponseEntity.ok(taskService.getTasksByDeveloperAndStatus(developerId, status));
+    }
+
+    @GetMapping("/developer/{developerId}/importance/{importance}")
+    public ResponseEntity<List<Tasks>> getTasksByDeveloperAndImportance(
+            @PathVariable int developerId,
+            @PathVariable Importance importance) {
+        return ResponseEntity.ok(taskService.getTasksByDeveloperAndImportance(developerId, importance));
     }
 }

@@ -18,6 +18,7 @@ import tn.sharing.spring.backend.Repository.UserRepo;
 
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import java.util.HashMap;
 
 
 @RestController
@@ -57,9 +58,17 @@ public class AuthController {
         // Create a refresh token
         RefreshToken refreshToken = refreshTokenService.createRefreshToken((int) user.getId());
 
-        return ResponseEntity.ok(Map.of(
-                "accessToken", token,
-                "refreshToken", refreshToken.getToken()));
+        // Create a response map with both tokens and user information
+        Map<String, Object> responseMap = new HashMap<>();
+        responseMap.put("accessToken", token);
+        responseMap.put("refreshToken", refreshToken.getToken());
+        responseMap.put("id", user.getId());
+        responseMap.put("username", user.getUsername());
+        responseMap.put("email", user.getEmail());
+        responseMap.put("role", user.getRole());
+        // Add any other user properties you want to include
+        
+        return ResponseEntity.ok(responseMap);
     }
 
     @PostMapping("/refresh")
