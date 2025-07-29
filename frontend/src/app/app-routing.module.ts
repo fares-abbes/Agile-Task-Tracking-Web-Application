@@ -11,6 +11,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { ClientCrudComponent } from './client-crud/client-crud.component';
+import { ViewTasksComponent } from './view-tasks/view-tasks.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthentificationComponent },
@@ -25,6 +26,8 @@ const routes: Routes = [
             { path: 'create-project', component: CreateProjectComponent },
             { path: 'create-task', component: CreateTaskComponent },
                         { path: 'getClients', component: ClientCrudComponent },
+                        { path: 'view-tasks', component: ViewTasksComponent },
+
 
 
 

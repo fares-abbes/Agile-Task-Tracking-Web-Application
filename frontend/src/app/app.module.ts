@@ -17,6 +17,7 @@ import { CreateUserComponent } from './create-user/create-user.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { ClientCrudComponent } from './client-crud/client-crud.component';
+import { ViewTasksComponent } from './view-tasks/view-tasks.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ClientCrudComponent } from './client-crud/client-crud.component';
     CreateUserComponent,
     CreateProjectComponent,
     CreateTaskComponent,
-    ClientCrudComponent
+    ClientCrudComponent,
+    ViewTasksComponent
   ],
   imports: [
     BrowserModule,
