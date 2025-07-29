@@ -16,6 +16,7 @@ import { AuthInterceptor } from "./interceptors/auth.interceptor";
 import { CreateUserComponent } from './create-user/create-user.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
+import { ClientCrudComponent } from './client-crud/client-crud.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { CreateTaskComponent } from './create-task/create-task.component';
     DeveloperTasksComponent,
     CreateUserComponent,
     CreateProjectComponent,
-    CreateTaskComponent
+    CreateTaskComponent,
+    ClientCrudComponent
   ],
   imports: [
     BrowserModule,
