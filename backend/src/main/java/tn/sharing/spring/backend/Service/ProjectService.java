@@ -11,6 +11,8 @@ import tn.sharing.spring.backend.Repository.UserRepo;
 import java.util.List;
 import java.util.Optional;
 
+import static tn.sharing.spring.backend.Entity.Status.TODO;
+
 @AllArgsConstructor
 @Service
 public class ProjectService {
@@ -37,6 +39,7 @@ public class ProjectService {
         
         // Set the client
         project.setClient(clientOpt.get());
+        project.setStatus("TODO");
         
         return projectRepo.save(project);
     }
@@ -53,8 +56,11 @@ public class ProjectService {
         return projectRepo.findById(projectId).map(project -> {
             project.setTasks(projectDetails.getTasks());
             project.setStatus(projectDetails.getStatus());
-            project.setLastModified(projectDetails.getLastModified());
-            project.setTeamLead(projectDetails.getTeamLead());
+            project.setProjectName(projectDetails.getProjectName());
+            project.setEndDate(projectDetails.getEndDate());
+            project.setDescription(projectDetails.getDescription());
+
+
             return projectRepo.save(project);
         }).orElse(null);
     }

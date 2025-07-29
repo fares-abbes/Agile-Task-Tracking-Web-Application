@@ -1,0 +1,26 @@
+<div class="form-container">
+  <form [formGroup]="createProjectForm" (ngSubmit)="onSubmit()">
+    <label for="projectName">Project Name</label>
+    <input id="projectName" formControlName="projectName" required />
+
+    <label for="description">Description</label>
+    <textarea id="description" formControlName="description" required></textarea>
+
+   
+
+    <label for="startDate">Start Date</label>
+    <input id="startDate" type="date" formControlName="startDate" required />
+
+    <label for="endDate">End Date</label>
+    <input id="endDate" type="date" formControlName="endDate" required />
+
+    <label for="clientId">Client</label>
+    <select id="clientId" formControlName="clientId" required>
+      <option value="" disabled>Select a client</option>
+      <option *ngFor="let client of clients" [value]="client.clientId">{{ client.clientName }}</option>
+    </select>
+
+    <button type="submit" [disabled]="loading || createProjectForm.invalid">Create Project</button>
+    <div *ngIf="errorMessage" style="color: #f87171; margin-top: 1rem;">{{ errorMessage }}</div>
+  </form>
+</div>

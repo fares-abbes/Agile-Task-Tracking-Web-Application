@@ -14,6 +14,8 @@ import { ProjectTasksComponent } from './project-tasks/project-tasks.component';
 import { DeveloperTasksComponent } from './developer-tasks/developer-tasks.component';
 import { AuthInterceptor } from "./interceptors/auth.interceptor";
 import { CreateUserComponent } from './create-user/create-user.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { CreateTaskComponent } from './create-task/create-task.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { CreateUserComponent } from './create-user/create-user.component';
     ProjectListComponent,
     ProjectTasksComponent,
     DeveloperTasksComponent,
-    CreateUserComponent
+    CreateUserComponent,
+    CreateProjectComponent,
+    CreateTaskComponent
   ],
   imports: [
     BrowserModule,

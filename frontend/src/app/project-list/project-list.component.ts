@@ -10,10 +10,20 @@ export class ProjectListComponent implements OnInit {
   projects: any[] = [];
   loading = true;
   error = false;
+  isTeamLead = false;
+  teamLeadId: number | null = null;
 
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
+    // Detect if connected user is a TEAMLEAD
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (currentUserStr) {
+      const currentUser = JSON.parse(currentUserStr);
+      this.isTeamLead = currentUser.role === 'TEAMLEAD';
+      this.teamLeadId = currentUser.id;
+    }
+
     this.route.queryParams.subscribe(params => {
       if (params['type'] === 'all') {
         // Admin: get all projects
@@ -51,5 +61,13 @@ export class ProjectListComponent implements OnInit {
       return;
     }
     this.router.navigate(['/projects', projectId, 'tasks']);
+  }
+
+  addTask(projectId: any) {
+    if (projectId === undefined || projectId === null || !this.teamLeadId) {
+      return;
+    }
+    // Navigate to your add-task route, passing projectId and teamLeadId as params or query params
+    this.router.navigate(['/create-task'], { queryParams: { projectId, teamLeadId: this.teamLeadId } });
   }
 }

@@ -38,9 +38,9 @@
             <td class="px-4 py-2" *ngIf="editUserId === user.id">
               <select [(ngModel)]="editRole" class="bg-gray-700 text-gray-100 rounded px-2 py-1 w-full border border-gray-600 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition">
                 <option value="ADMIN">ADMIN</option>
-                <option value="QUALITY">QUALITY</option>
+                <option value="DEVELOPPER">DEVELOPPER</option>
                 <option value="TESTER">TESTER</option>
-                <option value="USER">USER</option>
+                <option value="TEAMLEAD">TEAMLEAD</option>
               </select>
             </td>
             <td class="px-4 py-2 text-gray-200">{{ user.createdAt | date:'mediumDate' }}</td>

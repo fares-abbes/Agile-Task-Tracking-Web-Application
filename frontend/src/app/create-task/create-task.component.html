@@ -1,0 +1,27 @@
+<app-navbar></app-navbar>
+
+<div class="form-container">
+  <form [formGroup]="addTaskForm" (ngSubmit)="onSubmit()">
+    <label for="taskName">Task Name</label>
+    <input id="taskName" formControlName="taskName" required />
+
+    <label for="description">Description</label>
+    <textarea id="description" formControlName="description" required></textarea>
+
+    <label for="startDate">Start Date</label>
+    <input id="startDate" type="date" formControlName="startDate" required />
+
+    <label for="endDate">End Date</label>
+    <input id="endDate" type="date" formControlName="endDate" required />
+
+    <label for="importance">Importance</label>
+    <select id="importance" formControlName="importance">
+      <option value="LOW">Low</option>
+      <option value="MEDIUM">Medium</option>
+      <option value="HIGH">High</option>
+    </select>
+
+    <button type="submit" [disabled]="loading || addTaskForm.invalid">Add Task</button>
+    <div *ngIf="errorMessage" style="color: #f87171; margin-top: 1rem;">{{ errorMessage }}</div>
+  </form>
+</div>

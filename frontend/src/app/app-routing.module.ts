@@ -8,6 +8,8 @@ import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectTasksComponent } from './project-tasks/project-tasks.component';
 import { DeveloperTasksComponent } from './developer-tasks/developer-tasks.component';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { CreateTaskComponent } from './create-task/create-task.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthentificationComponent },
@@ -19,7 +21,8 @@ const routes: Routes = [
   { path: '', component: ListUsersComponent },
       { path: 'my-tasks', component: DeveloperTasksComponent },
             { path: 'create-user', component: CreateUserComponent },
-
+            { path: 'create-project', component: CreateProjectComponent },
+            { path: 'create-task', component: CreateTaskComponent },
 
 
 

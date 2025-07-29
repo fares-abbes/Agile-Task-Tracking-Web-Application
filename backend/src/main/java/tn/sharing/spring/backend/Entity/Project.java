@@ -19,7 +19,10 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int projectId;
     private String status;
-    private LocalDate lastModified;
+    private String projectName;
+    private String description;
+    private LocalDate startDate;
+    private LocalDate endDate;
     @ManyToOne
     @JsonIgnore
     private Users teamLead;
@@ -29,6 +32,5 @@ public class Project {
     @JsonIgnore
     @OneToMany(mappedBy = "project")
     List<Tasks> tasks;
-    @OneToOne
-    private TestReport testReport;
+
 }

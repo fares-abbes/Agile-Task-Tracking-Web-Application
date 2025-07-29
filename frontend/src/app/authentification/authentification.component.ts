@@ -25,7 +25,6 @@ export class AuthentificationComponent {
       next: (res) => {
         // Store tokens
         localStorage.setItem('accessToken', res.accessToken);
-        localStorage.setItem('refreshToken', res.refreshToken);
 
         // Store user information
         localStorage.setItem('currentUser', JSON.stringify({

@@ -1,5 +1,6 @@
 package tn.sharing.spring.backend.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,12 +34,10 @@ private  final PasswordEncoder passwordEncoder;
             user.setUsername(userDetails.getUsername());
             user.setRole(userDetails.getRole());
             user.setEmail(userDetails.getEmail());
-            user.setPassword(userDetails.getPassword());
-            user.setCreatedAt(userDetails.getCreatedAt());
             return userRepo.save(user);
         }).orElse(null);
     }
-
+    @Transactional
     public boolean deleteUser(int id) {
         if (userRepo.existsById(id)) {
             userRepo.deleteById(id);
