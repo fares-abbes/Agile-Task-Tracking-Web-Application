@@ -12,6 +12,7 @@ import tn.sharing.spring.backend.Entity.Importance;
 import tn.sharing.spring.backend.Service.TaskService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -80,5 +81,58 @@ public class TaskController {
             @PathVariable int developerId,
             @PathVariable Importance importance) {
         return ResponseEntity.ok(taskService.getTasksByDeveloperAndImportance(developerId, importance));
+    }
+
+    @GetMapping("/teamlead/{teamLeadId}")
+    public ResponseEntity<List<Tasks>> getTasksByTeamLead(@PathVariable int teamLeadId) {
+        List<Tasks> tasks = taskService.getTasksByTeamLead(teamLeadId);
+        return ResponseEntity.ok(tasks);
+    }
+    @GetMapping("/developer/{developerId}")
+    public ResponseEntity<List<Tasks>> getTasksByDeveloper(@PathVariable int developerId) {
+        List<Tasks> tasks = taskService.getTasksByDeveloper(developerId);
+        return ResponseEntity.ok(tasks);
+    }
+
+    @PostMapping("/assign-to-tester/{teamLeadId}")
+    public ResponseEntity<Tasks> assignTaskToTester(
+            @PathVariable int teamLeadId,
+            @RequestBody TaskAssignmentRequest request) {
+        Tasks assignedTask = taskService.assignTaskToTester(teamLeadId, request);
+        if (assignedTask == null) {
+            return ResponseEntity.status(403).build();
+        }
+        return ResponseEntity.ok(assignedTask);
+    }
+
+    @GetMapping("/getTasksByTester/{testerId}")
+    public ResponseEntity<List<Tasks>> getTasksByTester(@PathVariable int testerId) {
+        List<Tasks> tasks = taskService.getTasksByTester(testerId);
+        return ResponseEntity.ok(tasks);
+    }
+
+    @PutMapping("/tester/{testerId}/task/{taskId}/status/{status}")
+    public ResponseEntity<Tasks> updateTaskStatusByTester(
+            @PathVariable int testerId,
+            @PathVariable int taskId,
+            @PathVariable Status status) {
+
+        Tasks updatedTask = taskService.updateTaskStatusByTester(testerId, taskId, status);
+
+        if (updatedTask == null) {
+            return ResponseEntity.status(403).build();
+        }
+        return ResponseEntity.ok(updatedTask);
+    }
+
+    @GetMapping("/user/{userId}/filter")
+    public ResponseEntity<List<Tasks>> filterTasksByStatusAndImportance(
+            @PathVariable int userId,
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false) Importance importance) {
+
+        List<Tasks> userTasks = taskService.getTasksByUserId(userId);
+        List<Tasks> filtered = taskService.filterTasksByStatusAndImportance(userTasks, status, importance);
+        return ResponseEntity.ok(filtered);
     }
 }

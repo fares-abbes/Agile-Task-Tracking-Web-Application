@@ -6,30 +6,45 @@
     <div class="flex flex-col items-center mb-10">
       <div class="w-16 h-1 bg-indigo-600 rounded-full mb-4"></div>
       <h2 class="text-3xl font-bold text-white tracking-tight">
-        {{ isDeveloper ? 'My Tasks' : 'Tasks Overview' }}
+        {{ isDeveloper || isTester ? 'My Tasks' : 'Tasks Overview' }}
       </h2>
       <p class="text-gray-400 mt-2">
-        {{ isDeveloper ? 'View your assigned tasks' : 'View and manage tasks' }}
+        {{ isDeveloper ? 'View your assigned tasks' : isTester ? 'View tasks assigned for testing' : 'View and manage tasks' }}
       </p>
     </div>
 
-    <!-- Filter buttons for developers -->
-    <div *ngIf="isDeveloper" class="flex justify-center gap-4 mb-6">
-      <button (click)="loadTasks()"
+
+    <!-- Example filter buttons for testers -->
+    <div  class="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
+      <!-- Status Dropdown -->
+      <div>
+        <label for="status" class="text-gray-300 mr-2">Status:</label>
+        <select id="status" [(ngModel)]="selectedStatus"
+          class="bg-gray-800 text-gray-100 px-3 py-2 rounded border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option [ngValue]="undefined">All</option>
+          <option value="TODO">TODO</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="TESTING">Testing</option>
+          <option value="DONE">Done</option>
+          <option value="Approved">Approved</option>
+          <option value="NotApproved">Not Approved</option>
+        </select>
+      </div>
+      <!-- Importance Dropdown -->
+      <div>
+        <label for="importance" class="text-gray-300 mr-2">Importance:</label>
+        <select id="importance" [(ngModel)]="selectedImportance"
+          class="bg-gray-800 text-gray-100 px-3 py-2 rounded border border-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option [ngValue]="undefined">All</option>
+          <option value="HIGH">High</option>
+          <option value="MEDIUM">Medium</option>
+          <option value="LOW">Low</option>
+        </select>
+      </div>
+      <!-- Filter Button -->
+      <button (click)="filterTasks(selectedStatus, selectedImportance)"
         class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">
-        All Tasks
-      </button>
-      <button (click)="filterByStatus('TODO')"
-        class="bg-gray-600 hover:bg-gray-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">
-        TODO
-      </button>
-      <button (click)="filterByStatus('IN_PROGRESS')"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">
-        In Progress
-      </button>
-      <button (click)="filterByStatus('DONE')"
-        class="bg-green-600 hover:bg-green-700 text-white font-medium px-4 py-2 rounded-lg shadow transition">
-        Done
+        Filter
       </button>
     </div>
 
@@ -69,7 +84,9 @@
                     [ngClass]="{
                       'bg-gray-900/50 text-gray-400': task.status === 'TODO',
                       'bg-blue-900/50 text-blue-400': task.status === 'IN_PROGRESS',
-                      'bg-green-900/50 text-green-400': task.status === 'DONE'
+                      'bg-purple-900/50 text-purple-400': task.status === 'TESTING',
+                      'bg-green-900/50 text-green-400': task.status === 'DONE' || task.status === 'Approved',
+                      'bg-red-900/50 text-red-400': task.status === 'NotApproved'
                     }">
                 {{ task.status }}
               </span>
@@ -95,7 +112,9 @@
     <div *ngIf="!loading && !error && tasks.length === 0" class="bg-gray-900/90 border border-gray-800 rounded-xl p-8 text-center">
       <p class="text-gray-400 mb-4">No tasks found</p>
       <p class="text-gray-500 text-sm">
-        {{ isDeveloper ? 'No tasks have been assigned to you yet.' : 'No tasks available in your projects.' }}
+        {{ isDeveloper ? 'No tasks have been assigned to you yet.' :
+           isTester ? 'No tasks have been assigned for testing yet.' :
+           'No tasks available in your projects.' }}
       </p>
     </div>
   </div>

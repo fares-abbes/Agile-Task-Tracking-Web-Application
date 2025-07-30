@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 @Component({
   selector: 'app-view-tasks',
@@ -12,6 +13,9 @@ export class ViewTasksComponent implements OnInit {
   currentUser: any;
   isDeveloper = false;
   isTeamLead = false;
+  isTester = false; // Add this
+  selectedStatus?: string;
+  selectedImportance?: string;
 
   constructor(private http: HttpClient) {}
 
@@ -21,6 +25,7 @@ export class ViewTasksComponent implements OnInit {
       this.currentUser = JSON.parse(currentUserStr);
       this.isDeveloper = this.currentUser.role === 'DEVELOPPER';
       this.isTeamLead = this.currentUser.role === 'TEAMLEAD';
+      this.isTester = this.currentUser.role === 'TESTER'; // Add this
 
       this.loadTasks();
     }
@@ -31,13 +36,13 @@ export class ViewTasksComponent implements OnInit {
     let apiUrl = '';
 
     if (this.isDeveloper) {
-      // Developer sees tasks assigned to them
       apiUrl = `http://localhost:8090/api/tasks/developer/${this.currentUser.id}`;
     } else if (this.isTeamLead) {
-      // Team Lead sees tasks they created (from their projects)
       apiUrl = `http://localhost:8090/api/tasks/teamlead/${this.currentUser.id}`;
+    } else if (this.isTester) {
+      // Tester sees tasks assigned to them for testing
+      apiUrl = `http://localhost:8090/api/tasks/getTasksByTester/${this.currentUser.id}`;
     } else {
-      // Admin or other roles might see all tasks
       apiUrl = `http://localhost:8090/api/tasks`;
     }
 
@@ -76,6 +81,27 @@ export class ViewTasksComponent implements OnInit {
     if (this.isDeveloper) {
       this.loading = true;
       this.http.get<any[]>(`http://localhost:8090/api/tasks/developer/${this.currentUser.id}/importance/${importance}`)
+        .subscribe({
+          next: (data) => {
+            this.tasks = data;
+            this.loading = false;
+          },
+          error: () => {
+            this.error = true;
+            this.loading = false;
+          }
+        });
+    }
+  }
+
+  filterTasks(status?: string, importance?: string) {
+    if (this.isTester || this.isDeveloper) {
+      this.loading = true;
+      let params = [];
+      if (status) params.push(`status=${status}`);
+      if (importance) params.push(`importance=${importance}`);
+      const query = params.length ? '?' + params.join('&') : '';
+      this.http.get<any[]>(`http://localhost:8090/api/tasks/user/${this.currentUser.id}/filter${query}`)
         .subscribe({
           next: (data) => {
             this.tasks = data;

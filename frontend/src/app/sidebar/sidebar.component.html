@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+<div class="h-screen w-64 bg-gray-900 text-white flex flex-col shadow-lg">
+  <div class="p-6 text-2xl font-bold border-b border-gray-800">
+    Dashboard
+  </div>
+  <nav class="flex-1 p-4">
+    <ul class="space-y-2">
+      <li>
+        <a routerLink="/clients" routerLinkActive="bg-indigo-700"
+           class="block px-4 py-2 rounded hover:bg-indigo-600 transition">
+          Client Management
+        </a>
+      </li>
+      <li>
+        <a routerLink="/users" routerLinkActive="bg-indigo-700"
+           class="block px-4 py-2 rounded hover:bg-indigo-600 transition">
+          User Management
+        </a>
+      </li>
+      <li>
+        <a routerLink="/projects" routerLinkActive="bg-indigo-700"
+           class="block px-4 py-2 rounded hover:bg-indigo-600 transition">
+          Project Management
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
