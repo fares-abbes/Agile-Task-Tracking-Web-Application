@@ -14,6 +14,7 @@ import { ClientCrudComponent } from './client-crud/client-crud.component';
 import { ViewTasksComponent } from './view-tasks/view-tasks.component';
 import {SidebarComponent} from "./sidebar/sidebar.component";
 import { TestReportComponent } from './test-report/test-report.component';
+import { ViewTestReportsComponent } from './view-test-reports/view-test-reports.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthentificationComponent },
@@ -22,7 +23,7 @@ const routes: Routes = [
         { path: 'navbar', component: NavbarComponent },
   { path: 'projects', component: ProjectListComponent },
                   { path: 'projects/:projectId/tasks', component: ProjectTasksComponent },
-  { path: '', component: ListUsersComponent },
+  { path: '', component: AuthentificationComponent },
       { path: 'my-tasks', component: DeveloperTasksComponent },
             { path: 'create-user', component: CreateUserComponent },
             { path: 'create-project', component: CreateProjectComponent },
@@ -31,15 +32,7 @@ const routes: Routes = [
                         { path: 'view-tasks', component: ViewTasksComponent },
   { path: 'sidebar', component: SidebarComponent },
     { path: 'testreport/:taskId', component: TestReportComponent },
-
-
-
-
-
-
-
-
-
+    { path: 'my-task-reports', component: ViewTestReportsComponent },
 
 
 ];

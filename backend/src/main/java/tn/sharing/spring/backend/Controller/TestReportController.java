@@ -92,4 +92,16 @@ public class TestReportController {
         }
         return ResponseEntity.ok(updated);
     }
+
+    @GetMapping("/developer/{developerId}/reports")
+    public ResponseEntity<?> getReportsForDeveloper(@PathVariable int developerId) {
+        List<TestReport> reports = testReportService.getReportsForDeveloper(developerId);
+        return ResponseEntity.ok(reports);
+    }
+
+    @GetMapping("/teamlead/{teamLeadId}/reports")
+    public ResponseEntity<?> getReportsForTeamLead(@PathVariable int teamLeadId) {
+        List<TestReport> reports = testReportService.getReportsForTeamLead(teamLeadId);
+        return ResponseEntity.ok(reports);
+    }
 }

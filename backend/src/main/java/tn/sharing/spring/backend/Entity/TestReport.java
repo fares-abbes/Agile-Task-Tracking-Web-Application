@@ -21,7 +21,6 @@ public class TestReport {
     private int reportId;
 
     @OneToOne
-    @JsonIgnore
     private Tasks task;
 
     @ManyToOne

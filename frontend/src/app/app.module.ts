@@ -20,6 +20,7 @@ import { ClientCrudComponent } from './client-crud/client-crud.component';
 import { ViewTasksComponent } from './view-tasks/view-tasks.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TestReportComponent } from './test-report/test-report.component';
+import { ViewTestReportsComponent } from './view-test-reports/view-test-reports.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { TestReportComponent } from './test-report/test-report.component';
     ClientCrudComponent,
     ViewTasksComponent,
     SidebarComponent,
-    TestReportComponent
+    TestReportComponent,
+    ViewTestReportsComponent
   ],
   imports: [
     BrowserModule,

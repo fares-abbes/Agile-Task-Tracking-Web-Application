@@ -14,6 +14,8 @@ import tn.sharing.spring.backend.Entity.Tasks;
 import java.time.LocalDate;
 import java.util.Optional;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -100,5 +102,24 @@ public class TestReportService {
             return testReportRepo.save(report);
         }
         return null;
+    }
+
+    public List<TestReport> getReportsForDeveloper(int developerId) {
+        List<Tasks> tasks = tasksRepo.findByUsers_Id(developerId);
+        List<Integer> taskIds = tasks.stream().map(Tasks::getTaskId).toList();
+        if (taskIds.isEmpty()) {
+            return List.of();
+        }
+        return testReportRepo.findByTask_TaskIdIn(taskIds);
+    }
+
+    public List<TestReport> getReportsForTeamLead(int teamLeadId) {
+        // Get all tasks for this team lead
+        List<Tasks> tasks = tasksRepo.findByProject_TeamLead_Id(teamLeadId);
+        List<Integer> taskIds = tasks.stream().map(Tasks::getTaskId).toList();
+        if (taskIds.isEmpty()) {
+            return List.of();
+        }
+        return testReportRepo.findByTask_TaskIdIn(taskIds);
     }
 }

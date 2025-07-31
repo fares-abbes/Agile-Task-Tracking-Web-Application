@@ -11,7 +11,6 @@ import java.util.List;
 
 @Repository
 public interface TasksRepo extends JpaRepository<Tasks, Integer> {
-    List<Tasks> findByUsers_Id(int userId);
 
     List<Tasks> findByProject_ProjectId(int projectId);
 
@@ -19,5 +18,6 @@ public interface TasksRepo extends JpaRepository<Tasks, Integer> {
 
     List<Tasks> findByUsers_IdAndImportance(int userId, Importance importance);
     List<Tasks> findByProject_TeamLead_Id(int teamLeadId);
+List<Tasks> findByUsers_Id(int userId);
 
 }

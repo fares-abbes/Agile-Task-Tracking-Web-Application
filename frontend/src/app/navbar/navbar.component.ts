@@ -8,8 +8,14 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent {
   isMobileMenuOpen = false;
+  currentUser: any = null;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    const userStr = localStorage.getItem('currentUser');
+    if (userStr) {
+      this.currentUser = JSON.parse(userStr);
+    }
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -69,5 +75,17 @@ export class NavbarComponent {
     } else {
       this.router.navigate(['/projects']);
     }
+  }
+
+  goToReports() {
+    if (!this.currentUser) return;
+    if (this.currentUser.role === 'TEAMLEAD') {
+      // Route to the reports page and let the component load team lead reports
+      this.router.navigate(['/my-task-reports'], { queryParams: { type: 'teamlead' } });
+    } else if (this.currentUser.role === 'DEVELOPER') {
+      // Route to the reports page and let the component load developer reports
+      this.router.navigate(['/my-task-reports'], { queryParams: { type: 'developer' } });
+    }
+    // Add more roles if needed
   }
 }
