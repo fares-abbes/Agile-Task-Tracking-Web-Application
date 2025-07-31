@@ -19,6 +19,7 @@ import { CreateTaskComponent } from './create-task/create-task.component';
 import { ClientCrudComponent } from './client-crud/client-crud.component';
 import { ViewTasksComponent } from './view-tasks/view-tasks.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { TestReportComponent } from './test-report/test-report.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     CreateTaskComponent,
     ClientCrudComponent,
     ViewTasksComponent,
-    SidebarComponent
+    SidebarComponent,
+    TestReportComponent
   ],
   imports: [
     BrowserModule,

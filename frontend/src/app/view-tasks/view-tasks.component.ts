@@ -58,41 +58,6 @@ export class ViewTasksComponent implements OnInit {
     });
   }
 
-  // Optional: Filter by status for developers
-  filterByStatus(status: string) {
-    if (this.isDeveloper) {
-      this.loading = true;
-      this.http.get<any[]>(`http://localhost:8090/api/tasks/developer/${this.currentUser.id}/status/${status}`)
-        .subscribe({
-          next: (data) => {
-            this.tasks = data;
-            this.loading = false;
-          },
-          error: () => {
-            this.error = true;
-            this.loading = false;
-          }
-        });
-    }
-  }
-
-  // Optional: Filter by importance for developers
-  filterByImportance(importance: string) {
-    if (this.isDeveloper) {
-      this.loading = true;
-      this.http.get<any[]>(`http://localhost:8090/api/tasks/developer/${this.currentUser.id}/importance/${importance}`)
-        .subscribe({
-          next: (data) => {
-            this.tasks = data;
-            this.loading = false;
-          },
-          error: () => {
-            this.error = true;
-            this.loading = false;
-          }
-        });
-    }
-  }
 
   filterTasks(status?: string, importance?: string) {
     if (this.isTester || this.isDeveloper) {
@@ -114,4 +79,23 @@ export class ViewTasksComponent implements OnInit {
         });
     }
   }
+
+onApprovalToggle(task: any, event: Event) {
+  const inputElement = event.target as HTMLInputElement;
+  if (!inputElement) return;
+
+  const checked = inputElement.checked;
+  const newStatus = checked ? 'Approved' : 'NotApproved';
+
+  this.http.put<any>(`http://localhost:8090/api/tasks/task/${task.taskId}/status/${newStatus}`, {})
+    .subscribe({
+      next: (updatedTask) => {
+        task.status = updatedTask.status; // update status in UI
+      },
+      error: () => {
+        // Optionally show an error message
+      }
+    });
+}
+
 }

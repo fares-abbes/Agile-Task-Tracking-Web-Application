@@ -13,6 +13,7 @@ import tn.sharing.spring.backend.Entity.Role;
 import tn.sharing.spring.backend.Entity.Tasks;
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.HashMap;
 
 @AllArgsConstructor
 @Service
@@ -24,7 +25,7 @@ public class TestReportService {
 
 
 
-    public TestReport createTestReportForTask(int teamLeadId, int taskId, TestReport testReport) {
+    public TestReport createTestReportForTask(int teamLeadId, int taskId, int testerId, TestReport testReport) {
         System.out.println("Starting createTestReportForTask: teamLeadId=" + teamLeadId + ", taskId=" + taskId);
         
         // Check if the task exists
@@ -47,13 +48,8 @@ boolean isTeamLead = teamLeadOpt.isPresent() && teamLeadOpt.get().getRole() == R
         }
 
         // Check if the tester is valid
-        if (testReport.getTester() == null) {
-            System.out.println("Tester is null in the test report");
-            return null;
-        }
-        
-        int testerId = testReport.getTester().getId();
-        boolean isTesterValid = isTester(testerId);
+        Optional<Users> testerOpt = userRepo.findById(testerId);
+        boolean isTesterValid = testerOpt.isPresent() && testerOpt.get().getRole() == Role.TESTER;
         System.out.println("Tester check: " + isTesterValid + " for tester ID: " + testerId);
         
         if (!isTesterValid) {
@@ -61,14 +57,10 @@ boolean isTeamLead = teamLeadOpt.isPresent() && teamLeadOpt.get().getRole() == R
             return null;
         }
 
-        // Set the task and save the test report
+        // Set the task and tester, then save the test report
         testReport.setTask(task);
+        testReport.setTester(testerOpt.get());
         return testReportRepo.save(testReport);
-    }
-
-    private boolean isTester(int userId) {
-        Optional<Users> userOpt = userRepo.findById(userId);
-        return userOpt.isPresent() && userOpt.get().getRole() == Role.TESTER;
     }
 
     /**
@@ -88,6 +80,29 @@ boolean isTeamLead = teamLeadOpt.isPresent() && teamLeadOpt.get().getRole() == R
         return testReportRepo.findByTask_TaskId(taskId);
     }
 
+    public TestReport addAttributeToTestReport(int reportId, String attributeName, boolean isMet) {
+        Optional<TestReport> reportOpt = testReportRepo.findById(reportId);
+        if (reportOpt.isEmpty()) {
+            return null;
+        }
+        TestReport report = reportOpt.get();
+        if (report.getAttributes() == null) {
+            report.setAttributes(new HashMap<>());
+        }
+        report.getAttributes().put(attributeName, isMet);
+        return testReportRepo.save(report);
+    }
 
-
+    public TestReport removeAttributeFromTestReport(int reportId, String attributeName) {
+        Optional<TestReport> reportOpt = testReportRepo.findById(reportId);
+        if (reportOpt.isEmpty()) {
+            return null;
+        }
+        TestReport report = reportOpt.get();
+        if (report.getAttributes() != null) {
+            report.getAttributes().remove(attributeName);
+            return testReportRepo.save(report);
+        }
+        return report;
+    }
 }

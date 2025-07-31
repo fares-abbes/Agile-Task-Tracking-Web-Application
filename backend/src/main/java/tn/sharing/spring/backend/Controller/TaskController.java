@@ -135,4 +135,15 @@ public class TaskController {
         List<Tasks> filtered = taskService.filterTasksByStatusAndImportance(userTasks, status, importance);
         return ResponseEntity.ok(filtered);
     }
+
+    @PutMapping("/task/{taskId}/status/{status}")
+    public ResponseEntity<Tasks> updateTaskStatus(
+            @PathVariable int taskId,
+            @PathVariable Status status) {
+        Tasks updatedTask = taskService.updateTaskStatus(taskId, status);
+        if (updatedTask == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedTask);
+    }
 }

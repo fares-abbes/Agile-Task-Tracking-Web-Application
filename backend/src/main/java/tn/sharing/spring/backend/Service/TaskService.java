@@ -213,6 +213,16 @@ public class TaskService {
         return tasksRepo.save(task);
     }
 
+    public Tasks updateTaskStatus(int taskId, Status newStatus) {
+        Optional<Tasks> taskOpt = tasksRepo.findById(taskId);
+        if (taskOpt.isEmpty()) {
+            return null;
+        }
+        Tasks task = taskOpt.get();
+        task.setStatus(newStatus);
+        return tasksRepo.save(task);
+    }
+
     public List<Tasks> filterTasksByStatusAndImportance(List<Tasks> tasks, Status status, Importance importance) {
         return tasks.stream()
             .filter(task -> (status == null || task.getStatus() == status))

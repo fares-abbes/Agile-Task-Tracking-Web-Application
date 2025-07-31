@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -32,6 +33,8 @@ public class TestReport {
 
     @ElementCollection
     @CollectionTable(name = "test_report_attributes", joinColumns = @JoinColumn(name = "report_id"))
-    @Column(name = "attribute")
-    private List<String> attributes;
+    @MapKeyColumn(name = "attribute_name")
+    @Column(name = "is_met")
+    private Map<String, Boolean> attributes;
+
 }

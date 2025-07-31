@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.sharing.spring.backend.Entity.TestReport;
+import tn.sharing.spring.backend.Repository.TestReportRepo;
 import tn.sharing.spring.backend.Service.TestReportService;
 import tn.sharing.spring.backend.Entity.Tasks;
 import tn.sharing.spring.backend.Service.TaskService;
@@ -19,18 +20,20 @@ import java.util.Map;
 public class TestReportController {
     private final TestReportService testReportService;
     private final TaskService taskService;
+    private final TestReportRepo testReportRepo;
 
     @PostMapping("/create-task-report")
     public ResponseEntity<?> createTestReportForTask(
             @RequestParam("teamLeadId") int teamLeadId,
             @RequestParam("taskId") int taskId,
+            @RequestParam("testerId") int testerId,
             @RequestBody TestReport testReport) {
 
-        TestReport createdReport = testReportService.createTestReportForTask(teamLeadId, taskId, testReport);
+        TestReport createdReport = testReportService.createTestReportForTask(teamLeadId, taskId, testerId, testReport);
 
         if (createdReport == null) {
             return ResponseEntity.badRequest()
-                    .body("Failed to create test report. Ensure the team lead is authorized and the task exists.");
+                    .body("Failed to create test report. Ensure the team lead is authorized, the task exists, and the tester is valid.");
         }
 
         return ResponseEntity.ok(createdReport);
@@ -46,6 +49,36 @@ public class TestReportController {
 
         return ResponseEntity.ok(report);
     }
+    
+    @DeleteMapping("/{reportId}")
+    public ResponseEntity<?> deleteTestReport(@PathVariable int reportId) {
+        if (!testReportRepo.existsById(reportId)) {
+            return ResponseEntity.notFound().build();
+        }
+        testReportRepo.deleteById(reportId);
+        return ResponseEntity.ok().build();
+    }
 
+    @PostMapping("/{reportId}/attributes")
+    public ResponseEntity<?> addAttributeToTestReport(
+            @PathVariable int reportId,
+            @RequestParam String attributeName,
+            @RequestParam boolean isMet) {
+        TestReport updated = testReportService.addAttributeToTestReport(reportId, attributeName, isMet);
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updated);
+    }
 
+    @DeleteMapping("/{reportId}/attributes/{attributeName}")
+    public ResponseEntity<?> removeAttributeFromTestReport(
+            @PathVariable int reportId,
+            @PathVariable String attributeName) {
+        TestReport updated = testReportService.removeAttributeFromTestReport(reportId, attributeName);
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updated);
+    }
 }
