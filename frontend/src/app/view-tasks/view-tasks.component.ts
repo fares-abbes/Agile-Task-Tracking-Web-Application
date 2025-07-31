@@ -80,22 +80,38 @@ export class ViewTasksComponent implements OnInit {
     }
   }
 
-onApprovalToggle(task: any, event: Event) {
-  const inputElement = event.target as HTMLInputElement;
-  if (!inputElement) return;
+  onApprovalToggle(task: any, event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (!inputElement) return;
 
-  const checked = inputElement.checked;
-  const newStatus = checked ? 'Approved' : 'NotApproved';
+    const checked = inputElement.checked;
+    const newStatus = checked ? 'Approved' : 'NotApproved';
 
-  this.http.put<any>(`http://localhost:8090/api/tasks/task/${task.taskId}/status/${newStatus}`, {})
-    .subscribe({
-      next: (updatedTask) => {
-        task.status = updatedTask.status; // update status in UI
-      },
-      error: () => {
-        // Optionally show an error message
-      }
-    });
-}
+    this.http.put<any>(`http://localhost:8090/api/tasks/task/${task.taskId}/status/${newStatus}`, {})
+      .subscribe({
+        next: (updatedTask) => {
+          task.status = updatedTask.status; // update status in UI
+        },
+        error: () => {
+          // Optionally show an error message
+        }
+      });
+  }
+
+  viewTestReport(taskId: number) {
+    // Example: Open a modal, navigate, or fetch the report
+    // Here, we'll just fetch and log it
+    this.http.get<any>(`http://localhost:8090/api/test-reports/task/${taskId}`)
+      .subscribe({
+        next: (report) => {
+          // You can show the report in a modal or navigate to a details page
+          console.log('Test Report:', report);
+          // Example: this.selectedReport = report; this.showReportModal = true;
+        },
+        error: () => {
+          alert('No test report found for this task.');
+        }
+      });
+  }
 
 }

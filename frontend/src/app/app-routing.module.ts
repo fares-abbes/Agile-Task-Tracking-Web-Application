@@ -13,6 +13,7 @@ import { CreateTaskComponent } from './create-task/create-task.component';
 import { ClientCrudComponent } from './client-crud/client-crud.component';
 import { ViewTasksComponent } from './view-tasks/view-tasks.component';
 import {SidebarComponent} from "./sidebar/sidebar.component";
+import { TestReportComponent } from './test-report/test-report.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthentificationComponent },
@@ -29,6 +30,8 @@ const routes: Routes = [
                         { path: 'getClients', component: ClientCrudComponent },
                         { path: 'view-tasks', component: ViewTasksComponent },
   { path: 'sidebar', component: SidebarComponent },
+    { path: 'testreport/:taskId', component: TestReportComponent },
+
 
 
 

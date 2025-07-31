@@ -36,7 +36,13 @@ export class AuthentificationComponent {
         }));
 
         this.loading = false;
-        this.router.navigate(['projects']);
+        if (res.role === 'TEAMLEAD') {
+          this.router.navigate(['/projects'], { queryParams: { teamLeadId: res.id } });
+        } else if (res.role === 'ADMIN') {
+          this.router.navigate(['/projects'], { queryParams: { type: 'all' } });
+        } else {
+          this.router.navigate(['/projects']);
+        }
       },
       error: (err) => {
         console.error('Login error:', err);

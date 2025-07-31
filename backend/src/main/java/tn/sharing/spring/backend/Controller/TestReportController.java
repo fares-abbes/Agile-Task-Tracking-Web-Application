@@ -24,16 +24,15 @@ public class TestReportController {
 
     @PostMapping("/create-task-report")
     public ResponseEntity<?> createTestReportForTask(
-            @RequestParam("teamLeadId") int teamLeadId,
             @RequestParam("taskId") int taskId,
             @RequestParam("testerId") int testerId,
             @RequestBody TestReport testReport) {
 
-        TestReport createdReport = testReportService.createTestReportForTask(teamLeadId, taskId, testerId, testReport);
+        TestReport createdReport = testReportService.createTestReportForTask(taskId, testerId, testReport);
 
         if (createdReport == null) {
             return ResponseEntity.badRequest()
-                    .body("Failed to create test report. Ensure the team lead is authorized, the task exists, and the tester is valid.");
+                    .body("Failed to create test report. Ensure the task exists and the tester is valid.");
         }
 
         return ResponseEntity.ok(createdReport);
@@ -76,6 +75,18 @@ public class TestReportController {
             @PathVariable int reportId,
             @PathVariable String attributeName) {
         TestReport updated = testReportService.removeAttributeFromTestReport(reportId, attributeName);
+        if (updated == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updated);
+    }
+
+    @PutMapping("/{reportId}/attributes/{attributeName}/isMet")
+    public ResponseEntity<?> updateIsMetForAttribute(
+            @PathVariable int reportId,
+            @PathVariable String attributeName,
+            @RequestParam boolean isMet) {
+        TestReport updated = testReportService.updateIsMetForAttribute(reportId, attributeName, isMet);
         if (updated == null) {
             return ResponseEntity.notFound().build();
         }

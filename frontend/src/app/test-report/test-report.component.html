@@ -1,1 +1,94 @@
-<p>test-report works!</p>
+<div class="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 py-12 px-4">
+  <div class="max-w-4xl mx-auto">
+    <!-- Loading and Error States -->
+    <div *ngIf="loading" class="text-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-500 mx-auto"></div>
+      <p class="mt-4 text-gray-400">Loading test report...</p>
+    </div>
+
+    <div *ngIf="error" class="bg-red-900/40 text-red-200 p-6 rounded-lg text-center">
+      <p>No test report found for this task.</p>
+    </div>
+
+    <!-- Test Report Content -->
+    <div *ngIf="!loading && !error && report" class="bg-gray-900/90 rounded-lg shadow-lg overflow-hidden">
+      <!-- Report Header -->
+      <div class="bg-gray-800 p-6 border-b border-gray-700">
+        <h2 class="text-2xl font-bold text-white">Test Report</h2>
+        <p class="text-gray-400 mt-1">Report ID: {{report.reportId}}</p>
+        <div class="flex flex-wrap gap-4 mt-4">
+          <div class="flex-1 min-w-[200px]">
+            <p class="text-gray-400 text-sm">Date</p>
+            <p class="text-white">{{report.date | date:'mediumDate'}}</p>
+          </div>
+          <div class="flex-1 min-w-[200px]">
+            <p class="text-gray-400 text-sm">Result</p>
+            <p class="text-white">{{report.result}}</p>
+          </div>
+          <div class="flex-1 min-w-[200px]">
+            <p class="text-gray-400 text-sm">Tester</p>
+            <p class="text-white">{{report.tester?.username}}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Report Details -->
+      <div class="p-6">
+        <h3 class="text-xl font-semibold text-white mb-4">Details</h3>
+        <div class="mb-6">
+          <p class="text-gray-400 text-sm">Remarks</p>
+          <p class="text-white bg-gray-800 p-4 rounded mt-1">{{report.overallRemarks || 'No remarks provided.'}}</p>
+        </div>
+
+        <!-- Attributes Section -->
+        <div class="mt-8">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold text-white">Attributes</h3>
+          </div>
+
+          <!-- Add New Attribute Form -->
+          <form [formGroup]="attributeForm" (ngSubmit)="addAttribute()" class="mb-6 flex gap-2">
+            <input
+              type="text"
+              formControlName="attributeName"
+              placeholder="New attribute name"
+              class="flex-1 bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+            <button
+              type="submit"
+              [disabled]="!attributeForm.valid"
+              class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded shadow disabled:opacity-50 disabled:cursor-not-allowed">
+              Add
+            </button>
+          </form>
+
+          <!-- Attributes List -->
+          <div class="bg-gray-800 rounded-lg divide-y divide-gray-700">
+            <div *ngIf="report.attributes && Object.keys(report.attributes).length === 0" class="p-4 text-gray-400 text-center">
+              No attributes added yet.
+            </div>
+
+            <div *ngFor="let attr of report.attributes | keyvalue" class="flex items-center justify-between p-4 hover:bg-gray-750">
+              <div class="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  [checked]="attr.value === true"
+                  (change)="toggleAttribute($any(attr.key), $any(attr.value))"
+                  class="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-500 rounded"
+                >
+                <span class="text-white">{{attr.key}}</span>
+              </div>
+              <button
+                (click)="deleteAttribute($any(attr.key))"
+                class="text-red-400 hover:text-red-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

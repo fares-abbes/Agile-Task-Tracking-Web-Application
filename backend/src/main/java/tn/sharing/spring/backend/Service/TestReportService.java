@@ -25,35 +25,18 @@ public class TestReportService {
 
 
 
-    public TestReport createTestReportForTask(int teamLeadId, int taskId, int testerId, TestReport testReport) {
-        System.out.println("Starting createTestReportForTask: teamLeadId=" + teamLeadId + ", taskId=" + taskId);
-        
+    public TestReport createTestReportForTask(int taskId, int testerId, TestReport testReport) {
         // Check if the task exists
         Optional<Tasks> taskOpt = tasksRepo.findById(taskId);
         if (taskOpt.isEmpty()) {
-            System.out.println("Task not found with ID: " + taskId);
             return null;
         }
-
         Tasks task = taskOpt.get();
-        System.out.println("Task found: " + task.getTaksName());
-
-       Optional<Users> teamLeadOpt = userRepo.findById(teamLeadId);
-boolean isTeamLead = teamLeadOpt.isPresent() && teamLeadOpt.get().getRole() == Role.TEAMLEAD;
-        
-        System.out.println("Team lead check: " + isTeamLead + " for user ID: " + teamLeadId);
-        if (!isTeamLead) {
-            System.out.println("User is not authorized as team lead for this task");
-            return null;
-        }
 
         // Check if the tester is valid
         Optional<Users> testerOpt = userRepo.findById(testerId);
         boolean isTesterValid = testerOpt.isPresent() && testerOpt.get().getRole() == Role.TESTER;
-        System.out.println("Tester check: " + isTesterValid + " for tester ID: " + testerId);
-        
         if (!isTesterValid) {
-            System.out.println("User is not a valid tester with ID: " + testerId);
             return null;
         }
 
@@ -104,5 +87,18 @@ boolean isTeamLead = teamLeadOpt.isPresent() && teamLeadOpt.get().getRole() == R
             return testReportRepo.save(report);
         }
         return report;
+    }
+
+    public TestReport updateIsMetForAttribute(int reportId, String attributeName, boolean isMet) {
+        Optional<TestReport> reportOpt = testReportRepo.findById(reportId);
+        if (reportOpt.isEmpty()) {
+            return null;
+        }
+        TestReport report = reportOpt.get();
+        if (report.getAttributes() != null && report.getAttributes().containsKey(attributeName)) {
+            report.getAttributes().put(attributeName, isMet);
+            return testReportRepo.save(report);
+        }
+        return null;
     }
 }
