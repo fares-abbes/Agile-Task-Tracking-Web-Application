@@ -21,6 +21,7 @@ import { ViewTasksComponent } from './view-tasks/view-tasks.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TestReportComponent } from './test-report/test-report.component';
 import { ViewTestReportsComponent } from './view-test-reports/view-test-reports.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ViewTestReportsComponent } from './view-test-reports/view-test-reports.
     ViewTasksComponent,
     SidebarComponent,
     TestReportComponent,
-    ViewTestReportsComponent
+    ViewTestReportsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

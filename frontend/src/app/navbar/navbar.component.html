@@ -16,7 +16,7 @@
            class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition duration-150 ease-in-out cursor-pointer">
           Projects
         </a>
-        <a routerLink="/tasks" routerLinkActive="bg-gray-700 text-white"
+        <a  *ngIf="isTester()" routerLink="/view-tasks" routerLinkActive="bg-gray-700 text-white"
            class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition duration-150 ease-in-out">
           Tasks
         </a>
@@ -89,8 +89,8 @@
          class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
         My Tasks
       </a>
-      <a routerLink="/reports" routerLinkActive="bg-gray-900 text-white"
-         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+      <a (click)="goToReports()"
+         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white cursor-pointer">
         Reports
       </a>
     </div>

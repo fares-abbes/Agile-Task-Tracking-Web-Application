@@ -50,7 +50,19 @@ export class NavbarComponent {
       return false;
     }
   }
+isTester(): boolean {
+    const currentUserStr = localStorage.getItem('currentUser');
+    if (!currentUserStr) return false;
 
+    try {
+      const currentUser = JSON.parse(currentUserStr);
+      // Check if role is DEVELOPER (adjust the exact role name as needed)
+      return currentUser.role === 'TESTER';
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      return false;
+    }
+  }
   logout() {
     // Clear local storage
     localStorage.removeItem('currentUser');
@@ -78,14 +90,21 @@ export class NavbarComponent {
   }
 
   goToReports() {
-    if (!this.currentUser) return;
-    if (this.currentUser.role === 'TEAMLEAD') {
-      // Route to the reports page and let the component load team lead reports
-      this.router.navigate(['/my-task-reports'], { queryParams: { type: 'teamlead' } });
-    } else if (this.currentUser.role === 'DEVELOPER') {
-      // Route to the reports page and let the component load developer reports
-      this.router.navigate(['/my-task-reports'], { queryParams: { type: 'developer' } });
+    const userStr = localStorage.getItem('currentUser');
+    if (!userStr) {
+      this.router.navigate(['/auth']);
+      return;
     }
-    // Add more roles if needed
+    const currentUser = JSON.parse(userStr);
+
+    if (currentUser.role === 'TEAMLEAD') {
+      this.router.navigate(['/my-task-reports'], { queryParams: { type: 'teamlead' } });
+    } else if (currentUser.role === 'DEVELOPER') {
+      this.router.navigate(['/my-task-reports'], { queryParams: { type: 'developer' } });
+    } else if (currentUser.role === 'TESTER') {
+      this.router.navigate(['/testreport', 2]); // Change '2' to the dynamic report ID if needed
+    } else {
+      this.router.navigate(['/my-task-reports']);
+    }
   }
 }
