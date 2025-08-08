@@ -146,4 +146,9 @@ public class TaskController {
         }
         return ResponseEntity.ok(updatedTask);
     }
+
+    @GetMapping("/stats/rank-team-members-this-month")
+    public ResponseEntity<?> rankTeamMembersByTasksDoneThisMonth() {
+        return ResponseEntity.ok(taskService.rankTeamMembersByTasksDoneThisMonth());
+    }
 }

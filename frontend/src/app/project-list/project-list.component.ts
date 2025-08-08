@@ -36,7 +36,7 @@ export class ProjectListComponent implements OnInit {
             this.error = true;
             this.loading = false;
           }
-        });
+        });       
       } else if (params['teamLeadId']) {
         // TeamLead: get projects by teamLeadId
         this.http.get<any[]>(`http://localhost:8090/api/projects/teamlead/${params['teamLeadId']}`).subscribe({

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tn.sharing.spring.backend.DTOs.TaskAssignmentRequest;
 import tn.sharing.spring.backend.DTOs.TaskCreationRequest;
+import tn.sharing.spring.backend.DTOs.UserTaskRankDTO;
 import tn.sharing.spring.backend.Entity.*;
 import tn.sharing.spring.backend.Repository.ProjectRepo;
 import tn.sharing.spring.backend.Repository.TasksRepo;
@@ -228,5 +229,19 @@ public class TaskService {
             .filter(task -> (status == null || task.getStatus() == status))
             .filter(task -> (importance == null || task.getImportance() == importance))
             .collect(Collectors.toList());
+    }
+
+    public List<UserTaskRankDTO> rankTeamMembersByTasksDoneThisMonth() {
+        List<Object[]> results = tasksRepo.rankTeamMembersByTasksDoneThisMonth();
+        List<UserTaskRankDTO> stats = new ArrayList<>();
+        for (Object[] row : results) {
+            stats.add(new UserTaskRankDTO(
+                (Integer) row[0],
+                (String) row[1],
+                (Integer) row[2],
+                ((Long) row[3]).intValue()
+            ));
+        }
+        return stats;
     }
 }

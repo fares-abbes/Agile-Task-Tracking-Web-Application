@@ -47,4 +47,10 @@ public class UserController {
             return ResponseEntity.ok().build();
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/users/{userId}/assign-team/{teamId}")
+    public ResponseEntity<?> assignUserToTeam(@PathVariable int userId, @PathVariable int teamId) {
+        Users updatedUser = userService.assignUserToTeam(userId, teamId);
+        return ResponseEntity.ok(updatedUser);
+    }
 }

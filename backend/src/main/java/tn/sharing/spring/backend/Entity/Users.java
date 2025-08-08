@@ -39,5 +39,7 @@ public class Users {
     @ManyToMany
     @JsonIgnore
     private List<Tasks> tasks;
-
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 }
