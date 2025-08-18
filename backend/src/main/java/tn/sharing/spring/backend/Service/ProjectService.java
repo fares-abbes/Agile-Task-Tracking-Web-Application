@@ -1,6 +1,7 @@
 package tn.sharing.spring.backend.Service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.sharing.spring.backend.Entity.*;
 import tn.sharing.spring.backend.Repository.ClientRepo;
@@ -16,31 +17,30 @@ import static tn.sharing.spring.backend.Entity.Status.TODO;
 @AllArgsConstructor
 @Service
 public class ProjectService {
-    private final ProjectRepo projectRepo;
+    @Autowired
+    private ProjectRepo projectRepo;
     private final UserRepo userRepo;
     private final TestReportRepo testReportRepo;
     private final ClientRepo clientRepo;
 
-    
     public Project addProject(Project project, int userId, int clientId) {
-        
-            
+
         // Find and set the client by ID
         Optional<Client> clientOpt = clientRepo.findById(clientId);
         if (clientOpt.isEmpty()) {
             return null;
         }
-        
+
         // Set the user (quality user who created the project)
         Optional<Users> userOpt = userRepo.findById(userId);
         if (userOpt.isPresent()) {
             project.setTeamLead(userOpt.get());
         }
-        
+
         // Set the client
         project.setClient(clientOpt.get());
         project.setStatus("TODO");
-        
+
         return projectRepo.save(project);
     }
 
@@ -75,5 +75,9 @@ public class ProjectService {
 
     public List<Project> getProjectsByTeamLead(int teamLeadId) {
         return projectRepo.findByTeamLead_Id(teamLeadId);
+    }
+
+    public long getTotalProjects() {
+        return projectRepo.count();
     }
 }

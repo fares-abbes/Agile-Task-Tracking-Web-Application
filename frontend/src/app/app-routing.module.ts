@@ -15,6 +15,7 @@ import { ViewTasksComponent } from './view-tasks/view-tasks.component';
 import {SidebarComponent} from "./sidebar/sidebar.component";
 import { TestReportComponent } from './test-report/test-report.component';
 import { ViewTestReportsComponent } from './view-test-reports/view-test-reports.component';
+import { StatsComponent } from './stats/stats.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthentificationComponent },
@@ -33,6 +34,8 @@ const routes: Routes = [
   { path: 'sidebar', component: SidebarComponent },
     { path: 'testreport/:taskId', component: TestReportComponent },
     { path: 'my-task-reports', component: ViewTestReportsComponent },
+        { path: 'stats', component: StatsComponent },
+
 
 
 ];

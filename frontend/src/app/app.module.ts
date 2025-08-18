@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'; // <-- Import ReactiveFormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgChartsModule } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +23,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { TestReportComponent } from './test-report/test-report.component';
 import { ViewTestReportsComponent } from './view-test-reports/view-test-reports.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { StatsComponent } from './stats/stats.component';
+
 
 @NgModule({
   declarations: [
@@ -41,14 +44,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     SidebarComponent,
     TestReportComponent,
     ViewTestReportsComponent,
-    DashboardComponent
+    DashboardComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgChartsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

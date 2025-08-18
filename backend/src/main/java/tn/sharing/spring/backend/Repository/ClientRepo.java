@@ -6,4 +6,5 @@ import tn.sharing.spring.backend.Entity.Client;
 
 @Repository
 public interface ClientRepo extends JpaRepository<Client, Integer> {
+ 
 }

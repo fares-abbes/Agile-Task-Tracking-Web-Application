@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ProjectRepo extends JpaRepository<Project, Integer> {
     List<Project> findByTeamLead_Id(int teamLeadId);
+
 }

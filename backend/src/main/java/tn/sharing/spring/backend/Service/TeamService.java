@@ -22,4 +22,8 @@ public class TeamService {
     public Team createTeam(Team team) {
         return teamRepo.save(team);
     }
+
+    public long getTotalTeams() {
+        return teamRepo.count();
+    }
 }

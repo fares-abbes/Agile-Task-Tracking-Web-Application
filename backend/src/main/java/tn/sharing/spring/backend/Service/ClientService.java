@@ -1,6 +1,7 @@
 package tn.sharing.spring.backend.Service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.sharing.spring.backend.Entity.Client;
 import tn.sharing.spring.backend.Repository.ClientRepo;
@@ -12,7 +13,8 @@ import java.util.Optional;
 @Service
 public class ClientService {
 
-    private final ClientRepo clientRepo;
+    @Autowired
+    private ClientRepo clientRepo;
 
     public Client createClient(Client client) {
         return clientRepo.save(client);
@@ -39,5 +41,9 @@ public class ClientService {
             return true;
         }
         return false;
+    }
+
+    public long getTotalClients() {
+        return clientRepo.count();
     }
 }

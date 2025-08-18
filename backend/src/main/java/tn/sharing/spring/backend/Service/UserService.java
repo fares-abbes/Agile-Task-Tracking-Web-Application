@@ -5,9 +5,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tn.sharing.spring.backend.DTOs.UserTaskCountDTO;
+import tn.sharing.spring.backend.Entity.Role;
+import tn.sharing.spring.backend.Entity.Status;
 import tn.sharing.spring.backend.Entity.Team;
 import tn.sharing.spring.backend.Entity.Users;
 import tn.sharing.spring.backend.Repository.TeamRepo;
+import tn.sharing.spring.backend.Repository.UserRepo;
 import tn.sharing.spring.backend.Repository.UserRepo;
 
 import java.time.LocalDate;
@@ -65,5 +69,21 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Team not found"));
         user.setTeam(team);
         return usersRepo.save(user);
+    }
+
+    public long getTotalUsers() {
+        return usersRepo.count();
+    }
+
+    public List<UserTaskCountDTO> getTaskCountsForTeam(int teamId, Status status, Integer month, Integer year) {
+        return userRepo.countTasksPerUserInTeam(teamId, status, month, year);
+    }
+
+    public List<Users> getDevelopersByTeam(int teamId) {
+        return userRepo.findByTeam_TeamIdAndRole(teamId, Role.DEVELOPPER);
+    }
+
+    public List<Users> getTestersByTeam(int teamId) {
+        return userRepo.findByTeam_TeamIdAndRole(teamId, Role.TESTER);
     }
 }
