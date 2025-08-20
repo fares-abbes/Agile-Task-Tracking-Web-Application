@@ -24,6 +24,8 @@ import { TestReportComponent } from './test-report/test-report.component';
 import { ViewTestReportsComponent } from './view-test-reports/view-test-reports.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StatsComponent } from './stats/stats.component';
+import { GenerateTasksComponent } from './generate-tasks/generate-tasks.component';
+import { ScrollAreaComponent } from './scroll-area/scroll-area.component';
 
 
 @NgModule({
@@ -45,7 +47,9 @@ import { StatsComponent } from './stats/stats.component';
     TestReportComponent,
     ViewTestReportsComponent,
     DashboardComponent,
-    StatsComponent
+    StatsComponent,
+    GenerateTasksComponent,
+    ScrollAreaComponent,
   ],
   imports: [
     BrowserModule,

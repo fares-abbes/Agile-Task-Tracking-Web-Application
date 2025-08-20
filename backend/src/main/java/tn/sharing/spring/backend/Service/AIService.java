@@ -29,7 +29,7 @@ public class AIService {
         RestTemplate restTemplate = new RestTemplate();
         String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + geminiApiKey;
 
-        String prompt = "Given this project description, list all implementation tasks required for the project. For each task, assign a complexity level from 1 (simple) to 4 (very complex). Return ONLY a JSON array like: [{\"task\": \"Design database schema\", \"description\": \"Design the database tables and relationships.\", \"complexity\": 3}, ...]. Do not add any explanation or commentary.";
+        String prompt = "Given this project description, list ONLY the implementation tasks related to core backend and business functionalities (such as authentication, user management, task management, sprint planning, reporting, notifications, integrations, etc.). Do NOT include UI/UX design, deployment, testing, or infrastructure tasks. For each task, assign a complexity level from 1 (simple) to 4 (very complex). Return ONLY a JSON array like: [{\"task\": \"Implement authentication\", \"description\": \"Develop secure login and registration endpoints.\", \"complexity\": 2}, ...]. Do not add any explanation or commentary.";
         String fullPrompt = prompt + "\n\nProject description:\n" + description;
 
         Map<String, Object> requestBody = Map.of(

@@ -1,0 +1,67 @@
+/* ...existing code... */
+
+:host { display:block; }
+
+/* container */
+.scroll-area-root {
+  position: relative;
+  border-radius: 8px;
+  overflow: visible;
+  background: transparent;
+}
+
+/* the actual scrollable area */
+.scroll-content {
+  max-height: 18rem; /* default, override via class or inline style */
+  overflow: auto;
+  padding: 0.5rem;
+  border-radius: 6px;
+  background: transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* subtle separators inside content (use <hr class="sa-sep"> where needed) */
+.sa-sep { height:1px; margin:8px 0; background: rgba(255,255,255,0.04); border: none; }
+
+/* fade shadows top/bottom */
+.fade {
+  pointer-events: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 24px;
+  transition: opacity 220ms ease, transform 220ms ease;
+  opacity: 1;
+}
+.fade.hidden { opacity: 0; transform: translateY(-6px); }
+.fade.top { top: 0; background: linear-gradient(180deg, rgba(0,0,0,0.7), transparent); border-top-left-radius:8px; border-top-right-radius:8px; }
+.fade.bottom { bottom: 0; background: linear-gradient(0deg, rgba(0,0,0,0.7), transparent); border-bottom-left-radius:8px; border-bottom-right-radius:8px; }
+
+/* custom scrollbar: green thumb, transparent track */
+.scroll-content {
+  scrollbar-width: thin; /* firefox */
+  scrollbar-color: var(--green-2) transparent;
+}
+
+/* webkit */
+.scroll-content::-webkit-scrollbar { width: 10px; height: 10px; }
+.scroll-content::-webkit-scrollbar-track { background: transparent; }
+.scroll-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--green-1), var(--green-2));
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.scroll-content::-webkit-scrollbar-thumb:hover { filter:brightness(.95); }
+
+/* small accessibility focus outline when scroller focused */
+.scroll-content:focus { outline: 3px solid rgba(0,194,122,0.07); border-radius:6px; }
+
+/* utility for fixed height variants */
+.sa-h-72 { max-height: 18rem; } /* ~h-72 */
+.sa-w-48 { width: 12rem; }      /* ~w-48 */
+
+/* provide small helper spacing for demo items */
+.sa-item { padding: 6px 2px; color: #dfeffc; font-size: 0.93rem; }
+
+/* end */

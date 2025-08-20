@@ -1,0 +1,9 @@
+<div class="scroll-area-root" [ngClass]="class">
+  <div class="fade top" [class.hidden]="atTop"></div>
+
+  <div #scroller class="scroll-content" role="region" tabindex="0" aria-label="scroll-area">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="fade bottom" [class.hidden]="atBottom"></div>
+</div>

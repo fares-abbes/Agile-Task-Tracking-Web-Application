@@ -1,0 +1,103 @@
+<app-navbar></app-navbar>
+<div class="gt-page-root">
+  <div class="gt-shell">
+
+    <!-- Left: fixed sidebar history -->
+    <aside class="history-sidebar">
+      <div class="hs-top">
+        <h3 class="hs-title">Projects</h3>
+        <button class="btn-ghost small" (click)="clear()">+ New</button>
+      </div>
+
+      <div class="hs-search">
+        <input type="text" placeholder="Search projects..." (input)="searchTerm = $any($event.target).value" />
+      </div>
+
+      <nav class="hs-list" role="navigation" aria-label="Project history">
+        <ul>
+          <li *ngFor="let h of history"
+              (click)="loadFromHistory(h)"
+              [class.selected]="h.id === selectedHistoryId"
+              title="{{ h.title || ('Project #' + h.id) }}">
+            <div class="li-left">
+              <div class="li-title">{{ h.title || ('Project #' + h.id) }}</div>
+              <div class="li-meta muted">{{ h.createdAt | date:'short' }}</div>
+            </div>
+            <div class="li-actions">
+              <!-- optional quick actions could go here -->
+            </div>
+          </li>
+
+
+        </ul>
+      </nav>
+
+    </aside>
+
+    <!-- Right: main content -->
+    <main class="main-area">
+      <header class="main-header">
+        <div>
+          <h1 class="gt-title">Generate Project Tasks</h1>
+        </div>
+        <div class="header-actions">
+          <button class="btn-primary" (click)="saveCurrent()" [disabled]="tasks.length===0 || saving">Save</button>
+        </div>
+      </header>
+
+      <section class="content-grid">
+        <form class="panel form-panel" [formGroup]="form" (ngSubmit)="generate()">
+          <label class="field-label">Project Title </label>
+          <input formControlName="title" type="text" class="input-title" placeholder="Project title" />
+          <label class="field-label" style="margin-top:12px;">Project Description</label>
+          <textarea formControlName="description" rows="12" class="input-area"
+            placeholder="Describe the project focusing on features: authentication, user management, task management, integrations..."></textarea>
+
+          <div class="field-help">
+            <div *ngIf="descriptionControl.invalid && descriptionControl.touched" class="gt-error">
+              Description is required (min 10 characters).
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary" [disabled]="loading">
+              <span *ngIf="!loading">Generate Tasks</span>
+              <span *ngIf="loading">Generating…</span>
+            </button>
+          </div>
+        </form>
+
+        <aside class="panel results-panel">
+          <div *ngIf="errorMessage" class="error-box">{{ errorMessage }}</div>
+          <div *ngIf="loading && tasks.length === 0" class="loading">Waiting for results…</div>
+
+          <div *ngIf="tasks.length > 0" class="results">
+            <div class="results-head">
+              <h3>Generated tasks <span class="muted">({{ tasks.length }})</span></h3>
+              <label class="toggle-raw"><input type="checkbox" [(ngModel)]="showRaw"> Raw</label>
+            </div>
+
+            <div *ngIf="!showRaw" class="results-list">
+              <div *ngFor="let t of tasks; let i = index" class="result-row">
+                <div class="idx">{{ i + 1 }}</div>
+                <div class="content">
+                  <div class="task-title">{{ t.task }}</div>
+                  <div class="task-desc">{{ t.description }}</div>
+                </div>
+                <div class="complexity">
+                  <span class="badge" [ngClass]="{
+                    'c1': t.complexity===1, 'c2': t.complexity===2,
+                    'c3': t.complexity===3, 'c4': t.complexity===4}">
+                    {{ t.complexity }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <pre *ngIf="showRaw" class="raw-json">{{ tasks | json }}</pre>
+          </div>
+        </aside>
+      </section>
+    </main>
+  </div>
+</div>

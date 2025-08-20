@@ -1,0 +1,299 @@
+/* matte black page + left sidebar history */
+
+:root {
+  --matte-black: #000000;
+  --panel-bg: #0b0b0b;
+  --muted: #95a0b8;
+  --accent: #7c5cff;
+  --success: #a6f0c0;
+  --green-1: #7bf7a3;
+  --green-2: #00c27a;
+  --green-shadow: rgba(0,194,122,0.18);
+}
+
+/* full page */
+html, body, app-root, .gt-page-root { height:100%; margin:0; background:var(--matte-black); color:#e6eef8; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+
+/* shell: sidebar + main */
+.gt-shell { display:flex; height:100vh; gap:20px; max-width:1400px; margin:20px auto; padding:0 20px; box-sizing:border-box; }
+
+/* sidebar */
+.history-sidebar {
+  width:300px;
+  min-width:260px;
+  background: transparent;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:12px 6px;
+  position:sticky;
+  top:16px;
+  height:calc(100vh - 32px);
+}
+
+.hs-top { display:flex; justify-content:space-between; align-items:center; padding:6px 8px; }
+.hs-title { margin:0; font-size:14px; font-weight:700; color:#fff; }
+.hs-search input { width:100%; padding:8px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:#070707; color:#eaf2ff }
+
+/* history list */
+.hs-list { overflow:auto; padding-top:8px; }
+.hs-list ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.hs-list li {
+  display:flex; justify-content:space-between; align-items:center;
+  gap:8px; padding:10px; border-radius:8px; cursor:pointer;
+  background:transparent; border:1px solid rgba(255,255,255,0.02);
+}
+.hs-list li:hover { transform: translateX(6px); box-shadow: 0 8px 22px rgba(0,0,0,0.6); }
+.hs-list li.selected { transform: translateX(3px); border-color: rgba(0,194,122,0.14); background: rgba(0,194,122,0.03); }
+.li-title { font-weight:700; color:#f8fbff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px; }
+.li-meta { font-size:12px; color:var(--muted); margin-top:4px; }
+
+/* main area */
+.main-area { flex:1; display:flex; flex-direction:column; gap:12px; }
+.main-header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.03); }
+.header-actions { display:flex; gap:8px; align-items:center; }
+
+/* content grid */
+.content-grid { display:grid; grid-template-columns: 1fr 420px; gap:18px; margin-top:12px; }
+@media (max-width:1100px) { .gt-shell { padding:12px } .history-sidebar { display:none } .content-grid { grid-template-columns: 1fr } }
+
+/* panels */
+.panel { background:var(--panel-bg); border-radius:10px; padding:14px; min-height:120px; border:1px solid rgba(255,255,255,0.02); }
+.form-panel { min-height:420px; }
+.results-panel { min-height:420px; }
+
+/* form */
+.input-title { width:100%; padding:10px; border-radius:8px; border:1px solid rgba(255,255,255,0.03); background:#070707; color:#eaf2ff }
+.input-area { width:100%; min-height:240px; padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); background:#070707; color:#eaf2ff; resize:vertical }
+.field-label { color:var(--muted); font-weight:600; font-size:13px; }
+
+/* actions */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem; /* matches gap-2 */
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms cubic-bezier(.2,.9,.3,1), box-shadow 220ms ease, opacity 160ms ease;
+  outline: none;
+  border: none;
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--muted);
+  padding: 6px 10px;
+}
+.btn-ghost:hover { transform: translateY(-3px); color: #fff; }
+.btn-green {
+  background: linear-gradient(180deg, var(--green-1), var(--green-2));
+  color: #041124;
+  box-shadow: 0 10px 30px var(--green-shadow), inset 0 -6px 18px rgba(255,255,255,0.03);
+}
+.btn-green:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 46px rgba(0,194,122,0.22);
+}
+.btn-green:active {
+  transform: translateY(-1px) scale(0.997);
+}
+.btn-muted {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--muted);
+}
+.btn-muted:hover { background: rgba(255,255,255,0.02); transform: translateY(-2px); }
+
+/* tiny focus ring */
+.btn:focus {
+  box-shadow: 0 8px 30px rgba(124,92,255,0.08), 0 0 0 6px rgba(0,194,122,0.06);
+}
+
+/* subtle glowing pseudo for green buttons */
+.btn-green::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(.96);
+  transition: opacity 260ms ease, transform 260ms ease;
+  background: radial-gradient(400px 140px at 10% 20%, rgba(123,247,163,0.08), transparent 20%),
+              radial-gradient(300px 100px at 90% 80%, rgba(0,194,122,0.06), transparent 20%);
+}
+.btn-green:hover::after { opacity: 1; transform: scale(1); }
+
+/* make sure existing smaller btn classes still inherit base behaviour */
+.btn-ghost.small { padding: 6px 8px; }
+
+/* Scrollbar — remove background + green thumb (applies to hs-list and results-list) */
+.hs-list, .results-list, .raw-json {
+  scrollbar-width: thin; /* firefox */
+  scrollbar-color: var(--green-2) transparent; /* firefox: thumb track */
+}
+
+/* Restore previous tasks styling (compact, readable rows) */
+.results {
+  margin-top: 6px;
+}
+
+.results-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+}
+
+.results-list {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  max-height:58vh;
+  overflow:auto;
+  padding-right:6px;
+}
+
+/* each task row */
+.result-row {
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  padding:12px;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.007), transparent);
+  border:1px solid rgba(255,255,255,0.02);
+  transition: transform 140ms ease, box-shadow 180ms ease;
+}
+.result-row:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(2,6,23,0.6);
+}
+
+.idx {
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background: rgba(255,255,255,0.02);
+  color: var(--muted);
+  font-weight:800;
+  flex-shrink:0;
+}
+
+.content {
+  flex:1;
+  min-width:0;
+}
+
+.task-title {
+  font-weight:800;
+  color:#f8fbff;
+  font-size:14px;
+  line-height:1.15;
+  word-break:break-word;
+}
+
+.task-desc {
+  color:var(--muted);
+  margin-top:6px;
+  font-size:13px;
+  line-height:1.4;
+  max-height:4.2em;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.task-meta {
+  margin-top:10px;
+  display:flex;
+  gap:12px;
+  align-items:center;
+  font-size:12px;
+  color:var(--muted);
+}
+.meta-item { opacity:0.9 }
+
+/* complexity badge column */
+.complexity { display:flex; align-items:center; margin-left:12px; flex-shrink:0; }
+
+.badge {
+  display:inline-block;
+  padding:8px 10px;
+  border-radius:999px;
+  font-weight:800;
+  color:#041124;
+  min-width:44px;
+  text-align:center;
+}
+
+/* badge colors */
+.badge.c1 { background:var(--success); }
+.badge.c2 { background:#ffd88a; }
+.badge.c3 { background:#ffb4b4; }
+.badge.c4 { background:#ff8fb3; }
+
+/* raw json block */
+.raw-json {
+  background:#030512;
+  padding:12px;
+  border-radius:10px;
+  color:#bfe0ff;
+  margin-top:10px;
+  overflow:auto;
+  max-height:420px;
+}
+
+/* small Tailwind-like helpers you asked for */
+.flex { display: flex; }
+.flex-wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.gap-2 { gap: 0.5rem; }
+.md\\:flex-row { /* use in markup as class="md:fleх-row" is not valid; use md\:flex-row */ }
+@media (min-width: 768px) {
+  .md\:flex-row { flex-direction: row; }
+}
+
+/* ScrollArea size helpers (used by template classes) */
+.sa-h-40 { max-height: 10rem; }  /* ~h-40, for history */
+.sa-h-72 { max-height: 18rem; }  /* ~h-72, for results */
+.history-scroll .history-list { margin: 0; padding: 0; }
+.history-scroll .history-list li { padding: 8px; border-radius: 8px; display:flex; flex-direction:column; }
+
+/* keep the scroll area background transparent */
+.history-scroll .scroll-content,
+.results-scroll .scroll-content {
+  background: transparent;
+  padding: 0; /* we handle padding inside content wrapper */
+}
+
+/* tighten spacing inside scroll content */
+.history-scroll .p-2, .results-scroll .p-2 { padding: 6px; }
+
+/* reuse green scrollbar look already defined in scroll-area.css by component;
+   if you want a slight track blur add this */
+.history-scroll::-webkit-scrollbar-track,
+.results-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ensure separators (if used) look subtle */
+.sa-sep { border: none; height: 1px; background: rgba(255,255,255,0.03); margin: 6px 0; }
+
+/* small responsiveness */
+@media (max-width: 900px) {
+  .sa-h-72 { max-height: 28vh; }
+  .sa-h-40 { max-height: 22vh; }
+}
