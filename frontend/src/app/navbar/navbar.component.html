@@ -1,70 +1,81 @@
-<nav class="bg-gray-900 border-b border-gray-800 shadow-lg sticky top-0 z-50">
+<nav class="sticky top-0 z-50 backdrop-blur bg-black/60 border-b border-white/5">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between h-16">
-      <div class="flex-shrink-0 flex items-center">
-        <!-- Logo -->
-        <img class="h-10 w-auto" src="assets/sharinglogo.png" alt="Logo">
+    <div class="h-16 flex items-center justify-between">
+
+      <!-- Brand -->
+      <div class="flex items-center gap-4">
+        <a routerLink="/" class="flex items-center gap-3">
+          <img src="assets/sharinglogo.png" alt="Logo" class="h-10 w-20 rounded-md object-cover shadow-sm" />
+        </a>
       </div>
 
-      <!-- Navigation Links -->
-      <div class="hidden md:ml-6 md:flex md:items-center md:space-x-4">
-        <a routerLink="/dashboard" routerLinkActive="bg-gray-700 text-white"
-           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition duration-150 ease-in-out">
+      <!-- Desktop nav links -->
+      <div class="hidden md:flex items-center gap-2">
+        <a routerLink="/dashboard" routerLinkActive="bg-white/5 text-white"
+           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white transition">
           Dashboard
         </a>
-        <a (click)="goToProjects()"
-           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition duration-150 ease-in-out cursor-pointer">
+
+        <button (click)="goToProjects()"
+                class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white transition">
           Projects
-        </a>
-        <a  *ngIf="isTester()" routerLink="/view-tasks" routerLinkActive="bg-gray-700 text-white"
-           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition duration-150 ease-in-out">
+        </button>
+
+        <a *ngIf="isTester()" routerLink="/view-tasks" routerLinkActive="bg-white/5 text-white"
+           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white transition">
           Tasks
         </a>
-        <!-- My Tasks link - only visible for developers -->
-        <a *ngIf="isDeveloper()" routerLink="/my-tasks" routerLinkActive="bg-gray-700 text-white"
-           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition duration-150 ease-in-out">
+
+        <a *ngIf="isDeveloper()" routerLink="/my-tasks" routerLinkActive="bg-white/5 text-white"
+           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white transition">
           My Tasks
         </a>
-        <a routerLink="/my-task-reports" routerLinkActive="bg-gray-700 text-white"
-           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white transition duration-150 ease-in-out">
+
+        <a routerLink="/my-task-reports" routerLinkActive="bg-white/5 text-white"
+           class="px-3 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-white transition">
           Reports
         </a>
       </div>
 
-      <!-- User menu -->
-      <div class="flex items-center">
-        <div class="flex-shrink-0">
-          <button type="button" (click)="logout()"
-                  class="relative inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
-            <span>Logout</span>
+      <!-- Right actions: search (desktop), logout, avatar, mobile toggle -->
+      <div class="flex items-center gap-3">
+
+        <!-- Optional search (desktop) -->
+        <div class="hidden md:flex items-center">
+          <label class="relative">
+            <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input type="search" placeholder="Search projects..." class="pl-10 pr-3 py-2 rounded-md bg-white/5 text-sm text-gray-200 placeholder-gray-400 w-64 focus:outline-none focus:ring-2 focus:ring-emerald-400"/>
+          </label>
+        </div>
+
+        <!-- Logout button (green) -->
+        <button type="button" (click)="logout()"
+                class="inline-flex items-center px-4 py-2 rounded-full bg-emerald-400 text-zinc-900 font-semibold shadow-sm hover:scale-105 transition">
+          Logout
+        </button>
+
+        <!-- Avatar / profile -->
+        <div class="ml-2 relative">
+          <button type="button" class="flex items-center justify-center h-9 w-9 rounded-full bg-gray-700 hover:bg-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400">
+            <span class="sr-only">Open user menu</span>
+            <span class="text-sm font-medium">{{ getUserInitials() }}</span>
           </button>
         </div>
 
-        <!-- Profile dropdown -->
-        <div class="ml-3 relative">
-          <div>
-            <button type="button"
-                    class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
-              <span class="sr-only">Open user menu</span>
-              <div class="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center text-white">
-                <!-- User initial or avatar -->
-                <span>{{ getUserInitials() }}</span>
-              </div>
-            </button>
-          </div>
+        <!-- Mobile menu button -->
+        <div class="md:hidden -mr-2">
+          <button type="button" (click)="toggleMobileMenu()"
+                  class="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-white hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-emerald-400">
+            <span class="sr-only">Open main menu</span>
+            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
         </div>
-      </div>
 
-      <!-- Mobile menu button -->
-      <div class="-mr-2 flex items-center md:hidden">
-        <button type="button" (click)="toggleMobileMenu()"
-                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-          <span class="sr-only">Open main menu</span>
-          <!-- Menu icon -->
-          <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
       </div>
     </div>
   </div>
@@ -72,25 +83,24 @@
   <!-- Mobile menu -->
   <div class="md:hidden" [ngClass]="{'hidden': !isMobileMenuOpen}">
     <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      <a routerLink="/dashboard" routerLinkActive="bg-gray-900 text-white"
-         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+      <a routerLink="/dashboard" routerLinkActive="bg-white/5 text-white"
+         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
         Dashboard
       </a>
-      <a (click)="goToProjects()"
-         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white cursor-pointer">
+      <button (click)="goToProjects()"
+              class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
         Projects
-      </a>
-      <a routerLink="/tasks" routerLinkActive="bg-gray-900 text-white"
-         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+      </button>
+      <a *ngIf="isTester()" routerLink="/view-tasks" routerLinkActive="bg-white/5 text-white"
+         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
         Tasks
       </a>
-      <!-- My Tasks link in mobile menu - only visible for developers -->
-      <a *ngIf="isDeveloper()" routerLink="/my-tasks" routerLinkActive="bg-gray-900 text-white"
-         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">
+      <a *ngIf="isDeveloper()" routerLink="/my-tasks" routerLinkActive="bg-white/5 text-white"
+         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
         My Tasks
       </a>
       <a (click)="goToReports()"
-         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white cursor-pointer">
+         class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">
         Reports
       </a>
     </div>

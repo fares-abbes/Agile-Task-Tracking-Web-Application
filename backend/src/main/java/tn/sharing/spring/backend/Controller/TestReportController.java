@@ -1,6 +1,8 @@
 package tn.sharing.spring.backend.Controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.sharing.spring.backend.Entity.TestReport;
@@ -103,5 +105,20 @@ public class TestReportController {
     public ResponseEntity<?> getReportsForTeamLead(@PathVariable int teamLeadId) {
         List<TestReport> reports = testReportService.getReportsForTeamLead(teamLeadId);
         return ResponseEntity.ok(reports);
+    }
+
+    /**
+     * GET /api/testreports/tester/{testerId}
+     * Optional query param: taskId
+     * Returns the list of test reports visible to the given tester.
+     */
+    @GetMapping("/tester/{testerId}/reports")
+    public ResponseEntity<List<TestReport>> getReportsForTester(@PathVariable("testerId") int testerId) {
+        try {
+            List<TestReport> reports = testReportService.getReportsForTester(testerId);
+            return ResponseEntity.ok(reports);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

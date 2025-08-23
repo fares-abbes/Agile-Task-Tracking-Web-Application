@@ -21,9 +21,11 @@ public class TestReport {
     private int reportId;
 
     @OneToOne
+    @JsonIgnore
     private Tasks task;
 
     @ManyToOne
+    @JsonIgnore
     private Users tester;
 
     private LocalDate date;

@@ -1,0 +1,6 @@
+/* minimal stylesheet used by navbar/generate-tasks */
+:root{
+  --accent-green: #00c27a;
+  --muted: #95a0b8;
+}
+body { background:#050507; color:#e6eef8; font-family:Inter,system-ui,Segoe UI,Roboto; }

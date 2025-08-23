@@ -122,4 +122,16 @@ public class TestReportService {
         }
         return testReportRepo.findByTask_TaskIdIn(taskIds);
     }
+
+    /**
+     * Get test reports assigned to a tester (by testerId).
+     * Mirrors the teamLead/developer style: pass only testerId and return all reports assigned to that tester.
+     */
+    public List<TestReport> getReportsForTester(int testerId) {
+        List<TestReport> reports = testReportRepo.findByTester_Id(testerId);
+        if (reports == null || reports.isEmpty()) {
+            return List.of();
+        }
+        return reports;
+    }
 }

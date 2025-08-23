@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-view-test-reports',
@@ -16,7 +17,7 @@ export class ViewTestReportsComponent implements OnInit {
   currentUser: any = null;
   expandedIndex: number = -1;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
     const userStr = localStorage.getItem('currentUser');
@@ -37,16 +38,24 @@ export class ViewTestReportsComponent implements OnInit {
     this.reportsError = false;
     this.reports = [];
 
+    const base = `http://localhost:8090/api/test-reports`;
     let url = '';
+
     if (this.currentUser.role === 'TEAMLEAD') {
-      url = `http://localhost:8090/api/test-reports/teamlead/${this.currentUser.id}/reports`;
+      url = `${base}/teamlead/${this.currentUser.id}/reports`;
+    } else if (this.currentUser.role === 'DEVELOPER') {
+      url = `${base}/developer/${this.currentUser.id}/reports`;
+    } else if (this.currentUser.role === 'TESTER') {
+      // new tester endpoint
+      url = `${base}/tester/${this.currentUser.id}/reports`;
     } else {
-      url = `http://localhost:8090/api/test-reports/developer/${this.currentUser.id}/reports`;
+      // fallback to developer-style endpoint
+      url = `${base}/developer/${this.currentUser.id}/reports`;
     }
 
     this.http.get<any[]>(url).subscribe({
       next: (data) => {
-        this.reports = data;
+        this.reports = data || [];
         this.reportsLoading = false;
       },
       error: () => {
@@ -58,5 +67,11 @@ export class ViewTestReportsComponent implements OnInit {
 
   toggleDetails(index: number) {
     this.expandedIndex = this.expandedIndex === index ? -1 : index;
+  }
+
+  // navigate tester to testreport component (route: /testreport/:id)
+  navigateToReport(reportId: number | string): void {
+    if (!reportId) return;
+    this.router.navigate(['/testreport', reportId]);
   }
 }

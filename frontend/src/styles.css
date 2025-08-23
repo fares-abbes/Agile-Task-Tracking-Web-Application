@@ -1,4 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* optional global vars */
 :root {
+  --accent-green: #00c27a;
+  --muted: #95a0b8;
   --matte-black: #000000;
   --text: #e6eef8;
 }

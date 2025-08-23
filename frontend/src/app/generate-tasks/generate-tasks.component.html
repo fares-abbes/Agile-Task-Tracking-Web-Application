@@ -23,15 +23,10 @@
               <div class="li-title">{{ h.title || ('Project #' + h.id) }}</div>
               <div class="li-meta muted">{{ h.createdAt | date:'short' }}</div>
             </div>
-            <div class="li-actions">
-              <!-- optional quick actions could go here -->
-            </div>
+            <div class="li-actions"></div>
           </li>
-
-
         </ul>
       </nav>
-
     </aside>
 
     <!-- Right: main content -->
@@ -41,14 +36,15 @@
           <h1 class="gt-title">Generate Project Tasks</h1>
         </div>
         <div class="header-actions">
-          <button class="btn-primary" (click)="saveCurrent()" [disabled]="tasks.length===0 || saving">Save</button>
+          <button class="btn btn-primary" (click)="saveCurrent()" [disabled]="tasks.length===0 || saving">Save</button>
         </div>
       </header>
 
       <section class="content-grid">
         <form class="panel form-panel" [formGroup]="form" (ngSubmit)="generate()">
-          <label class="field-label">Project Title </label>
+          <label class="field-label">Project Title</label>
           <input formControlName="title" type="text" class="input-title" placeholder="Project title" />
+
           <label class="field-label" style="margin-top:12px;">Project Description</label>
           <textarea formControlName="description" rows="12" class="input-area"
             placeholder="Describe the project focusing on features: authentication, user management, task management, integrations..."></textarea>
@@ -60,8 +56,8 @@
           </div>
 
           <div class="form-actions">
-            <button type="submit" class="btn-primary" [disabled]="loading">
-              <span *ngIf="!loading">Generate Tasks</span>
+            <button type="submit" class="btn btn-primary" [disabled]="loading">
+              <span *ngIf="!loading" class="">Generate Tasks</span>
               <span *ngIf="loading">Generating…</span>
             </button>
           </div>
@@ -74,7 +70,6 @@
           <div *ngIf="tasks.length > 0" class="results">
             <div class="results-head">
               <h3>Generated tasks <span class="muted">({{ tasks.length }})</span></h3>
-              <label class="toggle-raw"><input type="checkbox" [(ngModel)]="showRaw"> Raw</label>
             </div>
 
             <div *ngIf="!showRaw" class="results-list">
