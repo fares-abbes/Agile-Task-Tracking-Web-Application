@@ -26,6 +26,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { StatsComponent } from './stats/stats.component';
 import { GenerateTasksComponent } from './generate-tasks/generate-tasks.component';
 import { ScrollAreaComponent } from './scroll-area/scroll-area.component';
+import { LineBarComponent } from './line-bar/line-bar.component';
+import { SemiCircleComponent } from './semi-circle/semi-circle.component';
 
 
 @NgModule({
@@ -50,7 +52,8 @@ import { ScrollAreaComponent } from './scroll-area/scroll-area.component';
     StatsComponent,
     GenerateTasksComponent,
     ScrollAreaComponent,
-  ],
+    LineBarComponent,
+    SemiCircleComponent,  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

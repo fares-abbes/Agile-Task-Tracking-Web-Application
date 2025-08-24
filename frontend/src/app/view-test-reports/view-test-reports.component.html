@@ -75,12 +75,7 @@
                     </svg>
                   </button>
 
-                  <!-- Tester-only button to open the single testreport view -->
-                  <button *ngIf="currentUser?.role === 'TESTER'"
-                          class="ml-3 inline-flex items-center px-3 py-1 rounded bg-emerald-500 text-zinc-900 text-sm font-medium hover:bg-emerald-600"
-                          [routerLink]="['/testreport', report.id || report.reportId || report.reportId]">
-                    Open Report
-                  </button>
+               
                 </td>
               </tr>
 

@@ -36,4 +36,6 @@ public interface UserRepo extends JpaRepository<Users, Integer> {
                                                    @Param("year") Integer year);
 
     List<Users> findByTeam_TeamIdAndRole(int teamId, Role role);
+    List<Users> findByTeam_TeamId(int teamId);
+
 }

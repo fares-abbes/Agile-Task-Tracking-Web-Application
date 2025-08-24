@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ProjectRepo extends JpaRepository<Project, Integer> {
+    // projects where the given user is the team lead (Users.id)
     List<Project> findByTeamLead_Id(int teamLeadId);
-
 }

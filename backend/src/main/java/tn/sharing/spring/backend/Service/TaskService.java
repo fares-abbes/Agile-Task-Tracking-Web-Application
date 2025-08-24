@@ -2,6 +2,7 @@ package tn.sharing.spring.backend.Service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import tn.sharing.spring.backend.DTOs.ProjectProgressDTO;
 import tn.sharing.spring.backend.DTOs.TaskAssignmentRequest;
 import tn.sharing.spring.backend.DTOs.TaskCreationRequest;
 import tn.sharing.spring.backend.DTOs.UserTaskRankDTO;
@@ -19,9 +20,48 @@ import java.util.stream.Collectors;
 @Service
 public class TaskService {
 
+    private final ProjectRepo projectRepo;
     private final TasksRepo tasksRepo;
     private final UserRepo userRepo;
-    private final ProjectRepo projectRepo;
+
+    /**
+     * For a given team lead (user id), return each project he leads with:
+     * - total tasks
+     * - count of tasks with status DONE or APPROVED
+     * - percentage (doneApproved / total * 100)
+     */
+    public List<ProjectProgressDTO> getProjectProgressForTeamLead(int teamLeadId) {
+        List<Project> projects = projectRepo.findByTeamLead_Id(teamLeadId);
+        if (projects == null || projects.isEmpty()) {
+            return List.of();
+        }
+
+        List<ProjectProgressDTO> result = new ArrayList<>();
+        List<Status> targetStatuses = List.of(Status.DONE, Status.Approved);
+
+        for (Project p : projects) {
+            // adjust getter if Project entity uses a different id/name field (projectId / id / name / projectName)
+            int projId = p.getProjectId(); // change to getId() if needed
+            String projName = p.getProjectName() != null ? p.getProjectName() : ("Project " + projId); // adjust getter if needed
+
+            // try optimized repo if available, otherwise fetch all tasks and filter
+            List<Tasks> projectTasks = tasksRepo.findByProject_ProjectId(projId);
+            int total = projectTasks == null ? 0 : projectTasks.size();
+
+            int doneApprovedCount = 0;
+            if (total > 0) {
+                doneApprovedCount = (int) projectTasks.stream()
+                        .filter(t -> t.getStatus() != null && (t.getStatus() == Status.DONE || t.getStatus() == Status.Approved))
+                        .count();
+            }
+
+            double percentage = total == 0 ? 0.0 : (100.0 * doneApprovedCount / total);
+
+            result.add(new ProjectProgressDTO(projId, projName, total, doneApprovedCount, percentage));
+        }
+
+        return result;
+    }
 
     public Tasks assignTaskToDeveloper(int teamLeadId, TaskAssignmentRequest request) {
         // Check if the user is a team lead
@@ -231,17 +271,62 @@ public class TaskService {
             .collect(Collectors.toList());
     }
 
-    public List<UserTaskRankDTO> rankTeamMembersByTasksDoneThisMonth() {
-        List<Object[]> results = tasksRepo.rankTeamMembersByTasksDoneThisMonth();
-        List<UserTaskRankDTO> stats = new ArrayList<>();
-        for (Object[] row : results) {
-            stats.add(new UserTaskRankDTO(
-                (Integer) row[0],
-                (String) row[1],
-                (Integer) row[2],
-                ((Long) row[3]).intValue()
-            ));
+ 
+    /**
+     * Return, for a given team id, the number of tasks marked DONE assigned to each team member.
+     * - teamId: id of the team
+     * - returns a list of UserTaskRankDTO where the 4th field is the count of DONE tasks assigned to that user
+     *
+     * Note: requires UserRepo to expose findByTeam_Id(int teamId) and TasksRepo to expose
+     * findByUsers_IdInAndStatus(List<Integer> userIds, Status status).
+     */
+    public List<UserTaskRankDTO> rankTeamMembersByTasksDoneThisMonth(int teamId) {
+        // get members of the team
+        List<Users> members = userRepo.findByTeam_TeamId(teamId);
+        if (members == null || members.isEmpty()) {
+            return List.of();
         }
+
+        // determine team lead id (first user in team with role TEAMLEAD)
+        int teamLeadId = members.stream()
+                .filter(u -> u.getRole() == Role.TEAMLEAD)
+                .map(Users::getId)
+                .findFirst()
+                .orElse(0);
+
+        // collect member ids
+        List<Integer> memberIds = members.stream().map(Users::getId).collect(Collectors.toList());
+
+        // fetch tasks assigned to these members that are marked DONE or Approved
+        List<Status> statuses = List.of(Status.DONE, Status.Approved);
+        List<Tasks> doneTasks = tasksRepo.findByUsers_IdInAndStatusIn(memberIds, statuses);
+        if (doneTasks == null || doneTasks.isEmpty()) {
+            // return zero counts for each member
+            List<UserTaskRankDTO> emptyStats = new ArrayList<>();
+            for (Users m : members) {
+                emptyStats.add(new UserTaskRankDTO(m.getId(), m.getUsername(), teamId, 0, teamLeadId));
+            }
+            return emptyStats;
+        }
+
+        // count tasks per member (a task assigned to multiple members counts for each assigned member)
+        java.util.Map<Integer, Integer> counts = new java.util.HashMap<>();
+        for (Tasks t : doneTasks) {
+            if (t.getUsers() == null) continue;
+            for (Users u : t.getUsers()) {
+                if (memberIds.contains(u.getId())) {
+                    counts.put(u.getId(), counts.getOrDefault(u.getId(), 0) + 1);
+                }
+            }
+        }
+
+        // build DTO list (preserve all members even if count == 0)
+        List<UserTaskRankDTO> stats = new ArrayList<>();
+        for (Users m : members) {
+            int cnt = counts.getOrDefault(m.getId(), 0);
+            stats.add(new UserTaskRankDTO(m.getId(), m.getUsername(), teamId, cnt, teamLeadId));
+        }
+
         return stats;
     }
 }

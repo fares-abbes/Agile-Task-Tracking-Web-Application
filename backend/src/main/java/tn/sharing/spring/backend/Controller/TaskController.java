@@ -1,10 +1,13 @@
 package tn.sharing.spring.backend.Controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.sharing.spring.backend.DTOs.ProjectProgressDTO;
 import tn.sharing.spring.backend.DTOs.TaskAssignmentRequest;
 import tn.sharing.spring.backend.DTOs.TaskCreationRequest;
+import tn.sharing.spring.backend.DTOs.UserTaskRankDTO;
 import tn.sharing.spring.backend.Entity.Tasks;
 import tn.sharing.spring.backend.Entity.Status;
 import tn.sharing.spring.backend.Entity.Importance;
@@ -147,8 +150,30 @@ public class TaskController {
         return ResponseEntity.ok(updatedTask);
     }
 
-    @GetMapping( "/stats/rank-team-members-this-month")
-    public ResponseEntity<?> rankTeamMembersByTasksDoneThisMonth() {
-        return ResponseEntity.ok(taskService.rankTeamMembersByTasksDoneThisMonth());
+    /**
+     * Return, for a given team id, the number of tasks marked DONE assigned to each team member.
+     * Matches the service method: rankTeamMembersByTasksDoneThisMonth(int teamId)
+     */
+    @GetMapping("/team/{teamId}/rank-done")
+    public ResponseEntity<List<UserTaskRankDTO>> rankTeamMembersByTasksDoneThisMonth(@PathVariable("teamId") int teamId) {
+        try {
+            List<UserTaskRankDTO> stats = taskService.rankTeamMembersByTasksDoneThisMonth(teamId);
+            return ResponseEntity.ok(stats);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * Return per-project progress (done + approved %) for projects led by the given team lead.
+     */
+    @GetMapping("/teamlead/{teamLeadId}/project-progress")
+    public ResponseEntity<List<ProjectProgressDTO>> getProjectProgressForTeamLead(@PathVariable("teamLeadId") int teamLeadId) {
+        try {
+            List<ProjectProgressDTO> stats = taskService.getProjectProgressForTeamLead(teamLeadId);
+            return ResponseEntity.ok(stats);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

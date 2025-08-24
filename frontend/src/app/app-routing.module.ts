@@ -17,6 +17,8 @@ import { TestReportComponent } from './test-report/test-report.component';
 import { ViewTestReportsComponent } from './view-test-reports/view-test-reports.component';
 import { StatsComponent } from './stats/stats.component';
 import { GenerateTasksComponent } from './generate-tasks/generate-tasks.component';
+import { LineBarComponent } from './line-bar/line-bar.component';
+import { SemiCircleComponent } from './semi-circle/semi-circle.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthentificationComponent },
@@ -37,6 +39,9 @@ const routes: Routes = [
     { path: 'my-task-reports', component: ViewTestReportsComponent },
         { path: 'stats', component: StatsComponent },
                 { path: 'generate-tasks', component: GenerateTasksComponent },
+  { path: 'linebar/:teamId', component: LineBarComponent },
+  { path: 'semi-circle/:teamLeadId', component: SemiCircleComponent },
+
 
 
 

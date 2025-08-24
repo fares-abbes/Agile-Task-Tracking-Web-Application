@@ -1,0 +1,54 @@
+<div class="max-w-md mx-auto p-4">
+  <div class="relative bg-slate-900/80 rounded-lg p-4">
+    <div class="flex items-center justify-between mb-3">
+      <div class="text-sm text-slate-300 font-medium">Project Progress</div>
+      <div class="flex gap-2">
+        <button (click)="prev()" class="w-8 h-8 bg-slate-800 text-white rounded-full">‹</button>
+        <button (click)="next()" class="w-8 h-8 bg-indigo-600 text-white rounded-full">›</button>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <div class="text-2xl font-bold text-white mb-1">{{ hasProjects ? (currentPercentage + '%') : '—' }}</div>
+      <div class="text-xs text-slate-100 mb-1">completion rate</div>
+
+      <!-- added vertical padding: more space at bottom with larger pb -->
+      <div class="w-72 mx-auto -mt-12 pt-6 pb-12">
+        <div class="h-44">
+          <canvas #chartCanvas class="w-full h-full block"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project Info -->
+    <div class="project-info">
+      <div class="project-name">{{ currentProjectName || 'No Project Selected' }}</div>
+      <div class="task-count">{{ hasProjects ? projects[currentIndex].doneApprovedCount : 0 }} / {{ hasProjects ?
+        projects[currentIndex].totalTasks : 0 }} tasks completed</div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item">
+        <div class="legend-dot completed"></div>
+        <div class="legend-text">Completed</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot in-progress"></div>
+        <div class="legend-text">In Progress</div>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot pending"></div>
+        <div class="legend-text">Pending</div>
+      </div>
+    </div>
+
+    <!-- Loading/Error States -->
+    <div *ngIf="loading" class="status-message">
+      <div class="loading-spinner"></div>
+      Loading projects...
+    </div>
+    <div *ngIf="error" class="status-message error">Failed to load data</div>
+    <div *ngIf="!loading && !error && !hasProjects" class="status-message">No projects found</div>
+  </div>
+</div>
