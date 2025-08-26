@@ -20,11 +20,40 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/tasks")
 @CrossOrigin(origins = "*")
-
 @AllArgsConstructor
 public class TaskController {
 
     private final TaskService taskService;
+
+    @GetMapping("/teamlead/{teamLeadId}/counts/pending")
+    public ResponseEntity<Long> countTeamLeadPending(@PathVariable("teamLeadId") int teamLeadId) {
+        try {
+            long c = taskService.countPendingByTeamLead(teamLeadId);
+            return ResponseEntity.ok(c);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/teamlead/{teamLeadId}/counts/completed")
+    public ResponseEntity<Long> countTeamLeadCompleted(@PathVariable("teamLeadId") int teamLeadId) {
+        try {
+            long c = taskService.countCompletedByTeamLead(teamLeadId);
+            return ResponseEntity.ok(c);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/teamlead/{teamLeadId}/counts/high-priority")
+    public ResponseEntity<Long> countTeamLeadHighPriority(@PathVariable("teamLeadId") int teamLeadId) {
+        try {
+            long c = taskService.countHighPriorityByTeamLead(teamLeadId);
+            return ResponseEntity.ok(c);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @PostMapping("/assign")
     public ResponseEntity<?> assignTask(
@@ -172,6 +201,32 @@ public class TaskController {
         try {
             List<ProjectProgressDTO> stats = taskService.getProjectProgressForTeamLead(teamLeadId);
             return ResponseEntity.ok(stats);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * Return count of team members for the team led by the given teamLeadId (user id).
+     */
+    @GetMapping("/teamlead/{teamLeadId}/members/count")
+    public ResponseEntity<Long> countTeamLeadMembers(@PathVariable("teamLeadId") int teamLeadId) {
+        try {
+            long count = taskService.countTeamMembersByTeamLead(teamLeadId);
+            return ResponseEntity.ok(count);
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /**
+     * Return all tasks for projects led by the given teamLeadId except tasks with status APPROVED.
+     */
+    @GetMapping("/teamlead/{teamLeadId}/tasks/not-approved")
+    public ResponseEntity<List<Tasks>> getTeamLeadTasksExcludingApproved(@PathVariable("teamLeadId") int teamLeadId) {
+        try {
+            List<Tasks> tasks = taskService.getTasksForTeamLeadExcludingApproved(teamLeadId);
+            return ResponseEntity.ok(tasks);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }

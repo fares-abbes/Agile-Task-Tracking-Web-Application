@@ -1,40 +1,191 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-950 via-gray-900 to-gray-800">
-  <div class="w-full max-w-md p-8 rounded-2xl shadow-2xl border border-gray-800 bg-gray-900/80 backdrop-blur-md">
-    <div class="flex flex-col items-center mb-8">
-      <img src="assets/sharinglogo.png" alt="Logo" class="h-16 mb-4 drop-shadow-lg">
-      <h2 class="text-3xl font-bold text-white mb-2 tracking-tight">Sign In</h2>
-      <p class="text-gray-400 text-center">Welcome back! Please login to your account.</p>
+<div class="min-h-screen flex items-center justify-center relative overflow-hidden" style="background: #0a0a0a;">
+
+  <!-- Animated background elements -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <!-- Floating orbs -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-green-400/5 rounded-full blur-3xl animate-pulse"
+      style="animation-delay: 2s;"></div>
+
+    <!-- Grid pattern -->
+    <div class="absolute inset-0 opacity-[0.02]"
+      style="background-image: radial-gradient(circle at 1px 1px, rgba(16, 185, 129, 0.3) 1px, transparent 0); background-size: 50px 50px;">
     </div>
-    <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="space-y-6">
-      <div>
-        <label for="username" class="block text-sm font-medium text-gray-300 mb-1">Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          [(ngModel)]="username"
-          required
-          class="block w-full rounded-lg bg-gray-800 border border-gray-700 text-gray-100 px-4 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 transition"
-        />
+  </div>
+
+  <div
+    class="w-full max-w-md p-6 rounded-3xl shadow-2xl border border-white/10 backdrop-blur-2xl relative overflow-hidden group hover:scale-[1.01] transition-all duration-500"
+    style="background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));">
+
+    <!-- Animated border -->
+    <div
+      class="absolute inset-0 rounded-3xl p-px bg-gradient-to-r from-transparent via-emerald-500/20 to-transparent animate-spin"
+      style="animation-duration: 8s;"></div>
+    <div class="absolute inset-px rounded-3xl"
+      style="background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));"></div>
+
+    <!-- Top accent line with animation -->
+    <div
+      class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-400/60 to-transparent animate-pulse">
+    </div>
+
+    <div class="relative z-10">
+      <!-- Header -->
+      <div class="flex flex-col items-center mb-8">
+        <div class="relative mb-4 group">
+          <div
+            class="absolute inset-0 bg-emerald-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300">
+          </div>
+          <img src="assets/codeflow1.png" alt="CodeFlow Logo"
+            class="h-16 w-16 relative z-10 rounded-2xl object-cover border border-emerald-500/20 group-hover:scale-110 transition-transform duration-300"
+            style="filter: drop-shadow(0 12px 24px rgba(16, 185, 129, 0.2));">
+        </div>
+
+        <h2
+          class="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-slate-50 via-emerald-200 to-slate-50 mb-2 tracking-tight animate-pulse">
+          Welcome Back
+        </h2>
+        <p class="text-slate-300/80 text-center text-sm max-w-xs">
+          Sign in to your CodeFlow account and start building amazing projects
+        </p>
       </div>
-      <div>
-        <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          [(ngModel)]="password"
-          required
-          class="block w-full rounded-lg bg-gray-800 border border-gray-700 text-gray-100 px-4 py-2 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 transition"
-        />
+
+      <!-- Form -->
+      <form (ngSubmit)="onLogin()" #loginForm="ngForm" class="space-y-5">
+
+        <!-- Username Field -->
+        <div class="group">
+          <label for="username"
+            class="block text-sm font-medium text-slate-200 mb-2 group-focus-within:text-emerald-400 transition-colors">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+              </svg>
+              Username
+            </span>
+          </label>
+          <div class="relative">
+            <input type="text" id="username" name="username" [(ngModel)]="username" required
+              placeholder="Enter your username"
+              class="block w-full rounded-2xl px-5 py-3 text-slate-50 placeholder-slate-400/60 border border-white/10 transition-all duration-300 focus:outline-none focus:border-emerald-500/60 focus:ring-4 focus:ring-emerald-500/10 hover:-translate-y-1 hover:shadow-xl group-hover:shadow-emerald-500/5"
+              style="background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));" />
+            <!-- Focus indicator -->
+            <div
+              class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 via-emerald-500/5 to-emerald-500/0 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="group">
+          <label for="password"
+            class="block text-sm font-medium text-slate-200 mb-2 group-focus-within:text-emerald-400 transition-colors">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                </path>
+              </svg>
+              Password
+            </span>
+          </label>
+          <div class="relative">
+            <input type="password" id="password" name="password" [(ngModel)]="password" required
+              placeholder="Enter your password"
+              class="block w-full rounded-2xl px-5 py-3 text-slate-50 placeholder-slate-400/60 border border-white/10 transition-all duration-300 focus:outline-none focus:border-emerald-500/60 focus:ring-4 focus:ring-emerald-500/10 hover:-translate-y-1 hover:shadow-xl group-hover:shadow-emerald-500/5"
+              style="background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));" />
+            <!-- Focus indicator -->
+            <div
+              class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 via-emerald-500/5 to-emerald-500/0 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none">
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="pt-2">
+          <button type="submit" [disabled]="loading"
+            class="w-full py-3 px-6 rounded-2xl text-white font-bold text-lg shadow-2xl transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-2 hover:scale-[1.02] relative overflow-hidden group active:scale-[0.98]"
+            style="background: linear-gradient(135deg, #10b981 0%, #059669 50%, #047857 100%); box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);">
+            <!-- Animated background -->
+            <div
+              class="absolute inset-0 bg-gradient-to-r from-emerald-400 via-green-500 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            </div>
+
+            <!-- Shimmer effect -->
+            <div
+              class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent">
+            </div>
+
+            <!-- Ripple effect -->
+            <div class="absolute inset-0 rounded-2xl overflow-hidden">
+              <div
+                class="absolute inset-0 bg-white/10 scale-0 group-active:scale-100 transition-transform duration-300 rounded-full">
+              </div>
+            </div>
+
+            <span class="relative z-10 flex items-center justify-center">
+              <!-- Loading spinner -->
+              <span *ngIf="loading"
+                class="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-3"></span>
+
+              <!-- Success icon animation -->
+              <svg *ngIf="!loading" class="w-5 h-5 mr-3 group-hover:rotate-12 transition-transform duration-300"
+                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+                </path>
+              </svg>
+
+              {{ loading ? 'Signing In...' : 'Sign In' }}
+            </span>
+          </button>
+        </div>
+
+        <!-- Error message with enhanced animation -->
+        <div *ngIf="errorMessage"
+          class="relative overflow-hidden bg-gradient-to-r from-red-500/10 via-red-400/15 to-red-500/10 border border-red-500/30 text-red-300 px-4 py-3 rounded-2xl text-sm text-center animate-bounce backdrop-blur-sm">
+          <div class="absolute inset-0 bg-gradient-to-r from-red-500/5 via-red-400/10 to-red-500/5 animate-pulse"></div>
+          <span class="relative z-10 flex items-center justify-center gap-2">
+            <svg class="w-4 h-4 animate-pulse" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                clip-rule="evenodd"></path>
+            </svg>
+            {{ errorMessage }}
+          </span>
+        </div>
+      </form>
+
+      <!-- Footer -->
+      <div class="mt-6 pt-4 border-t border-white/10 text-center">
+        <p class="text-slate-400 text-sm">
+          Don't have an account?
+          <a href="#"
+            class="text-emerald-400 hover:text-emerald-300 font-semibold transition-all duration-300 hover:underline decoration-emerald-400/50 underline-offset-4">
+            Contact your administrator
+          </a>
+        </p>
+
+        <!-- Additional features -->
+        <div class="mt-4 flex justify-center space-x-4 text-xs text-slate-500">
+          <span class="flex items-center gap-1">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                clip-rule="evenodd"></path>
+            </svg>
+            Secure Login
+          </span>
+          <span class="flex items-center gap-1">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"></path>
+            </svg>
+            Verified Platform
+          </span>
+        </div>
       </div>
-      <button
-        type="submit"
-        [disabled]="loading"
-        class="w-full py-2 px-4 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-semibold shadow-md transition disabled:opacity-60"
-      >
-        {{ loading ? 'Logging in...' : 'Login' }}
-      </button>
-    </form>
+    </div>
   </div>
 </div>

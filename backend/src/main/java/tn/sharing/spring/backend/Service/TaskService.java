@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 public class TaskService {
-
     private final ProjectRepo projectRepo;
     private final TasksRepo tasksRepo;
     private final UserRepo userRepo;
@@ -328,5 +327,50 @@ public class TaskService {
         }
 
         return stats;
+    }
+
+    
+
+    // counts for projects led by teamLeadId: TODO, IN_PROGRESS, NOT_APPROVED
+    public long countPendingByTeamLead(int teamLeadId) {
+        List<Status> pending = List.of(Status.TODO, Status.IN_PROGRESS, Status.NotApproved);
+        return tasksRepo.countByProject_TeamLead_IdAndStatusIn(teamLeadId, pending);
+    }
+
+    // counts for projects led by teamLeadId: APPROVED, DONE
+    public long countCompletedByTeamLead(int teamLeadId) {
+        List<Status> completed = List.of(Status.Approved, Status.DONE);
+        return tasksRepo.countByProject_TeamLead_IdAndStatusIn(teamLeadId, completed);
+    }
+
+    // counts for projects led by teamLeadId with importance CRITICAL or HIGH
+    public long countHighPriorityByTeamLead(int teamLeadId) {
+        List<Importance> imps = List.of(Importance.CRITICAL, Importance.HIGH);
+        return tasksRepo.countByProject_TeamLead_IdAndImportanceIn(teamLeadId, imps);
+    }
+
+    /**
+     * Count number of team members for the team of the given teamLead (by user id).
+     * - finds the team of the provided teamLead user and returns the number of users in that team.
+     * - returns 0 if user or team not found.
+     */
+    public long countTeamMembersByTeamLead(int teamLeadId) {
+        Optional<Users> leadOpt = userRepo.findById(teamLeadId);
+        if (leadOpt.isEmpty()) {
+            return 0L;
+        }
+        Users lead = leadOpt.get();
+        if (lead.getTeam() == null) {
+            return 0L;
+        }
+        int teamId = lead.getTeam().getTeamId();
+        return userRepo.countByTeam_TeamId(teamId);
+    }
+
+    /**
+     * Return all tasks for projects led by the given teamLeadId excluding tasks with Status.APPROVED.
+     */
+    public List<Tasks> getTasksForTeamLeadExcludingApproved(int teamLeadId) {
+        return tasksRepo.findByProject_TeamLead_IdAndStatusNot(teamLeadId, Status.Approved);
     }
 }

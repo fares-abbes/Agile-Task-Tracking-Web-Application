@@ -2,6 +2,7 @@ package tn.sharing.spring.backend.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tn.sharing.spring.backend.Entity.Importance;
 import tn.sharing.spring.backend.Entity.Role;
@@ -42,4 +43,25 @@ public interface TasksRepo extends JpaRepository<Tasks, Integer> {
 
     // optional optimized query:
     List<Tasks> findByProject_ProjectIdAndStatusIn(int projectId, List<Status> statuses);
+
+
+    /*
+      NOTE: If your Tasks entity doesn't have an assignedTo -> team relationship,
+      and you want to count tasks belonging to projects owned by a team lead or project.team_id,
+      you can use a query like:
+
+      @Query("SELECT COUNT(t) FROM Tasks t WHERE t.project.team.teamId = :teamId AND t.status IN :statuses")
+      long countByProjectTeamAndStatuses(@Param("teamId") int teamId, @Param("statuses") List<Status> statuses);
+    */
+
+    // Count tasks where the task's project is led by the given teamLead and status is in the list
+    @Query("SELECT COUNT(t) FROM Tasks t WHERE t.project.teamLead.id = :teamLeadId AND t.status IN :statuses")
+    long countByProject_TeamLead_IdAndStatusIn(@Param("teamLeadId") int teamLeadId, @Param("statuses") List<Status> statuses);
+
+    // Count tasks where the task's project is led by the given teamLead and importance is in the list
+    @Query("SELECT COUNT(t) FROM Tasks t WHERE t.project.teamLead.id = :teamLeadId AND t.importance IN :importances")
+    long countByProject_TeamLead_IdAndImportanceIn(@Param("teamLeadId") int teamLeadId, @Param("importances") List<Importance> importances);
+
+    // find all tasks for projects led by a team lead excluding a specific status (e.g. APPROVED)
+    List<Tasks> findByProject_TeamLead_IdAndStatusNot(int teamLeadId, Status status);
 }

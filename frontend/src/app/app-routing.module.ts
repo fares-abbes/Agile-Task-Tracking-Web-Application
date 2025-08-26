@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {LandingPageComponent} from "./landing-page/landing-page.component";
 import {AuthentificationComponent} from "./authentification/authentification.component";
 import { ListUsersComponent } from './list-users/list-users.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -19,10 +18,12 @@ import { StatsComponent } from './stats/stats.component';
 import { GenerateTasksComponent } from './generate-tasks/generate-tasks.component';
 import { LineBarComponent } from './line-bar/line-bar.component';
 import { SemiCircleComponent } from './semi-circle/semi-circle.component';
+import { TeamleadBoardComponent } from './teamlead-board/teamlead-board.component';
+import { ProjectManagementComponent } from './project-management/project-management.component';
+import { LandingpageGreenComponent } from './landingpage-green/landingpage-green.component';
 
 const routes: Routes = [
   { path: 'auth', component: AuthentificationComponent },
-  { path: 'landing', component: LandingPageComponent },
     { path: 'listusers', component: ListUsersComponent },
         { path: 'navbar', component: NavbarComponent },
   { path: 'projects', component: ProjectListComponent },
@@ -41,7 +42,9 @@ const routes: Routes = [
                 { path: 'generate-tasks', component: GenerateTasksComponent },
   { path: 'linebar/:teamId', component: LineBarComponent },
   { path: 'semi-circle/:teamLeadId', component: SemiCircleComponent },
-
+  { path: 'teamlead-board/:teamLeadId', component: TeamleadBoardComponent },
+      { path: 'projectmanagement', component: ProjectManagementComponent },
+            { path: 'landingg', component: LandingpageGreenComponent },
 
 
 

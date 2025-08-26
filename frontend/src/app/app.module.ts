@@ -6,7 +6,7 @@ import { NgChartsModule } from 'ng2-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LandingPageComponent } from './landing-page/landing-page.component';
+// Remove this line: import { LandingPageComponent } from './landing-page/landing-page.component';
 import { AuthentificationComponent } from './authentification/authentification.component';
 import { ListUsersComponent } from './list-users/list-users.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -28,12 +28,14 @@ import { GenerateTasksComponent } from './generate-tasks/generate-tasks.componen
 import { ScrollAreaComponent } from './scroll-area/scroll-area.component';
 import { LineBarComponent } from './line-bar/line-bar.component';
 import { SemiCircleComponent } from './semi-circle/semi-circle.component';
+import { TeamleadBoardComponent } from './teamlead-board/teamlead-board.component';
+import { ProjectManagementComponent } from './project-management/project-management.component';
+import { LandingpageGreenComponent } from './landingpage-green/landingpage-green.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LandingPageComponent,
     AuthentificationComponent,
     ListUsersComponent,
     NavbarComponent,
@@ -53,7 +55,10 @@ import { SemiCircleComponent } from './semi-circle/semi-circle.component';
     GenerateTasksComponent,
     ScrollAreaComponent,
     LineBarComponent,
-    SemiCircleComponent,  ],
+    SemiCircleComponent,
+    TeamleadBoardComponent,
+    ProjectManagementComponent,
+    LandingpageGreenComponent,  ],
   imports: [
     BrowserModule,
     AppRoutingModule,

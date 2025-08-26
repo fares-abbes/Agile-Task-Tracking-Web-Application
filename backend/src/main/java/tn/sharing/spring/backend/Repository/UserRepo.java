@@ -37,5 +37,7 @@ public interface UserRepo extends JpaRepository<Users, Integer> {
 
     List<Users> findByTeam_TeamIdAndRole(int teamId, Role role);
     List<Users> findByTeam_TeamId(int teamId);
+        long countByTeam_TeamId(int teamId);
+
 
 }

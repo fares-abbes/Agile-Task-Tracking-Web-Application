@@ -1,0 +1,98 @@
+<app-navbar></app-navbar>
+<div class="flex">
+
+  <!-- existing sidebar component (assumes selector is app-sidebar) -->
+  <div class="hidden md:block w-64">
+    <app-sidebar></app-sidebar>
+  </div>
+
+  <!-- add top padding so content sits below the navbar -->
+  <div class="flex-1 p-4 pt-2">
+    <div class="max-w-6xl mx-auto px-4 py-6">
+      <!-- stats row -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        <div class="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 shadow-lg">
+          <div class="flex-none w-12 h-12 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+            <!-- icon -->
+            <svg class="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12h18M3 6h18M3 18h18"/></svg>
+          </div>
+          <div class="flex-1">
+            <div class="text-sm text-slate-300">Pending</div>
+            <div class="text-2xl font-semibold text-white">{{ counts.pending }}</div>
+            <div class="text-xs text-slate-400 mt-1">TODO · IN_PROGRESS · NotApproved</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 shadow-lg">
+          <div class="flex-none w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-green-300" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div class="flex-1">
+            <div class="text-sm text-slate-300">Completed</div>
+            <div class="text-2xl font-semibold text-white">{{ counts.completed }}</div>
+            <div class="text-xs text-slate-400 mt-1">Approved · Done</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 shadow-lg">
+          <div class="flex-none w-12 h-12 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-yellow-300" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3"/></svg>
+          </div>
+          <div class="flex-1">
+            <div class="text-sm text-slate-300">High Priority</div>
+            <div class="text-2xl font-semibold text-white">{{ counts.highPriority }}</div>
+            <div class="text-xs text-slate-400 mt-1">CRITICAL · HIGH</div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-slate-800 via-slate-900 to-slate-800 shadow-lg">
+          <div class="flex-none w-12 h-12 rounded-lg bg-sky-500/20 flex items-center justify-center">
+            <svg class="w-6 h-6 text-sky-300" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7h18M3 12h18M3 17h18"/></svg>
+          </div>
+          <div class="flex-1">
+            <div class="text-sm text-slate-300">Team Members</div>
+            <div class="text-2xl font-semibold text-white">{{ counts.members }}</div>
+            <div class="text-xs text-slate-400 mt-1">Team size</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- tasks list (card list instead of table) -->
+      <div class="space-y-3">
+        <div *ngIf="!loading && tasks.length === 0" class="text-slate-400 text-center py-6">No tasks to show.</div>
+        <div *ngFor="let t of tasks" class="flex items-center justify-between gap-4 p-4 bg-slate-800/60 rounded-xl shadow">
+          <div class="flex items-start gap-3 min-w-0">
+            <div class="flex-none w-2.5 h-10 rounded-r-full" [ngClass]="{
+                'bg-emerald-400': t.status === 'APPROVED' || t.status === 'DONE',
+                'bg-yellow-400': t.importance === 'HIGH' || t.importance === 'CRITICAL',
+                'bg-slate-600': true }"></div>
+
+            <div class="min-w-0">
+              <div class="text-sm text-slate-200 font-medium truncate">{{ t.taksName || '—' }}</div>
+              <div class="text-xs text-slate-400 truncate">{{ t.project?.projectName || '—' }} • {{ t.assignedTo?.username || 'Unassigned' }}</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="text-xs px-2 py-1 rounded-full" [ngClass]="{
+                'bg-emerald-600 text-white': t.status === 'APPROVED' || t.status === 'DONE',
+                'bg-yellow-700 text-white': t.status === 'IN_PROGRESS',
+                'bg-rose-600 text-white': t.status === 'NotApproved',
+                'bg-slate-700 text-slate-200': t.status == null }">
+              {{ t.status }}
+            </div>
+
+            <div class="text-xs px-2 py-1 rounded-full bg-slate-700 text-slate-200">
+              {{ t.importance || '—' }}
+            </div>
+
+            <div class="text-xs text-slate-400 hidden sm:block">
+              {{ t.date_debut ? (t.date_debut | date:'shortDate') : '—' }} • {{ t.date_fin ? (t.date_fin | date:'shortDate') : '—' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
