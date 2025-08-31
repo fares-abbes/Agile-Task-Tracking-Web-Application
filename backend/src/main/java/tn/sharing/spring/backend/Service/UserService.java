@@ -85,5 +85,20 @@ public class UserService {
 
     public List<Users> getTestersByTeam(int teamId) {
         return userRepo.findByTeam_TeamIdAndRole(teamId, Role.TESTER);
+
+    }
+    public Team getUserTeam(int userId) {
+        Users user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        
+        return user.getTeam();
+    }
+
+    public Team getUserTeamId(int userId) {
+        Users user = userRepo.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+        
+        Team team = user.getTeam();
+        return team ;
     }
 }

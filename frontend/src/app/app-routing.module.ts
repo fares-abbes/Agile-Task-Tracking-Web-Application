@@ -34,7 +34,7 @@ const routes: Routes = [
             { path: 'create-project', component: CreateProjectComponent },
             { path: 'create-task', component: CreateTaskComponent },
                         { path: 'getClients', component: ClientCrudComponent },
-                        { path: 'view-tasks', component: ViewTasksComponent },
+                        { path: 'view-tasks', component: ViewTasksComponent },       
   { path: 'sidebar', component: SidebarComponent },
     { path: 'testreport/:taskId', component: TestReportComponent },
     { path: 'my-task-reports', component: ViewTestReportsComponent },

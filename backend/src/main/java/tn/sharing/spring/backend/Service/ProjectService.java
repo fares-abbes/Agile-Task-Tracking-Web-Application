@@ -80,4 +80,9 @@ public class ProjectService {
     public long getTotalProjects() {
         return projectRepo.count();
     }
+
+    // Method to get project statistics for team lead dashboard
+    public Object getTeamLeadProjectStats(int teamLeadId) {
+        return projectRepo.findByTeamLead_Id(teamLeadId);
+    }
 }

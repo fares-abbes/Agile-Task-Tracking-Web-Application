@@ -3,16 +3,18 @@ package tn.sharing.spring.backend.Controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.sharing.spring.backend.Entity.Team;
 import tn.sharing.spring.backend.Entity.Users;
 import tn.sharing.spring.backend.Service.UserService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "*")
-
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -53,4 +55,23 @@ public class UserController {
         Users updatedUser = userService.assignUserToTeam(userId, teamId);
         return ResponseEntity.ok(updatedUser);
     }
+
+    @GetMapping("/{userId}/team")
+    public ResponseEntity<?> getUserTeam(@PathVariable int userId) {
+        try {
+            Team team = userService.getUserTeam(userId);
+            if (team != null) {
+                Map<String, Object> response = new HashMap<>();
+                response.put("teamId", team.getTeamId());
+                response.put("teamName", team.getName());
+                return ResponseEntity.ok(response);
+            } else {
+                return ResponseEntity.ok(Map.of("message", "User is not assigned to any team"));
+            }
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+
 }

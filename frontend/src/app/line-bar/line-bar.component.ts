@@ -28,13 +28,21 @@ export class LineBarComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   hasData = false;
   pendingRows: UserTaskRankDTO[] = [];
   viewInitialized = false;
+  currentUserId: number | null = null;
 
   constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
     console.log('[LineBar] ngOnInit teamId (input) =', this.teamId);
-    // fallback to route param if input not provided
-    if (this.teamId == null) {
+
+    // Get current user ID first
+    this.getCurrentUserId();
+
+    // If no teamId input provided, get it from current user
+    if (this.teamId == null && this.currentUserId) {
+      this.getUserTeamId();
+    } else if (this.teamId == null) {
+      // fallback to route param if input not provided
       const param = this.route.snapshot.paramMap.get('teamId');
       console.log('[LineBar] route param teamId =', param);
       if (param) {
@@ -42,12 +50,48 @@ export class LineBarComponent implements OnInit, OnChanges, AfterViewInit, OnDes
         if (!isNaN(id)) this.teamId = id;
       }
     }
-    // still no teamId -> do not call backend (or navigate to choose one)
+
+    // Load data if we have teamId
     if (this.teamId != null) {
       this.loadData();
-    } else {
-      console.warn('[LineBar] no teamId provided (use /linebar/:teamId or bind [teamId])');
     }
+  }
+
+  private getCurrentUserId(): void {
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      try {
+        const user = JSON.parse(currentUser);
+        this.currentUserId = user.id || user.userId;
+        console.log('[LineBar] Current user ID:', this.currentUserId);
+      } catch (error) {
+        console.error('[LineBar] Error parsing current user:', error);
+      }
+    }
+  }
+
+  private getUserTeamId(): void {
+    if (!this.currentUserId) return;
+
+    const url = `http://localhost:8090/api/users/${this.currentUserId}/team`;
+    console.log('[LineBar] Getting team for user:', this.currentUserId);
+
+    this.http.get<any>(url).subscribe({
+      next: (response) => {
+        console.log('[LineBar] User team response:', response);
+        if (response && response.teamId) {
+          this.teamId = response.teamId;
+          this.loadData();
+        } else {
+          console.warn('[LineBar] User is not assigned to any team');
+          this.error = true;
+        }
+      },
+      error: (err) => {
+        console.error('[LineBar] Failed to get user team:', err);
+        this.error = true;
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
